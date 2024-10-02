@@ -1,3 +1,5 @@
 /node_module
 yarn.lock
 /dist
+
+rollup.config.js

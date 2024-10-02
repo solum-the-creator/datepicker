@@ -4,7 +4,6 @@
   "tabWidth": 2,
   "bracketSameLine": true,
   "arrowParens": "always",
-  "jsxBracketSameLine": true,
   "bracketSpacing": true,
   "quoteProps": "as-needed",
   "endOfLine": "lf"
