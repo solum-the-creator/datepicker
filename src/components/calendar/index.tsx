@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { CalendarBody } from "@components/calendar-body";
 import { CalendarHeader } from "@components/calendar-header";
 import GlobalStyles from "@styles/global";
@@ -8,28 +7,29 @@ import { ThemeProvider } from "styled-components";
 
 import { CalendarContainer } from "./calendar.styled";
 
-export const Calendar: React.FC = () => {
-  const today = new Date();
+type CalendarProps = {
+  currentMonth: number;
+  currentYear: number;
+  startWeekOnSunday?: boolean;
+  onMonthChange?: (month: number, year: number) => void;
+};
 
-  const [currentMonth, setCurrentMonth] = useState(today.getMonth());
-  const [currentYear, setCurrentYear] = useState(today.getFullYear());
-
+export const Calendar: React.FC<CalendarProps> = ({
+  currentMonth,
+  currentYear,
+  onMonthChange,
+  startWeekOnSunday = true,
+}) => {
   const handlePrevClick = () => {
-    if (currentMonth === 0) {
-      setCurrentMonth(11);
-      setCurrentYear(currentYear - 1);
-    } else {
-      setCurrentMonth(currentMonth - 1);
-    }
+    const newMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+    const newYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+    onMonthChange?.(newMonth, newYear);
   };
 
   const handleNextClick = () => {
-    if (currentMonth === 11) {
-      setCurrentMonth(0);
-      setCurrentYear(currentYear + 1);
-    } else {
-      setCurrentMonth(currentMonth + 1);
-    }
+    const newMonth = currentMonth === 11 ? 0 : currentMonth + 1;
+    const newYear = currentMonth === 11 ? currentYear + 1 : currentYear;
+    onMonthChange?.(newMonth, newYear);
   };
 
   return (
@@ -43,7 +43,7 @@ export const Calendar: React.FC = () => {
           onPrevClick={handlePrevClick}
           onNextClick={handleNextClick}
         />
-        <CalendarBody month={currentMonth} year={currentYear} />
+        <CalendarBody month={currentMonth} year={currentYear} startWeekOnSunday={startWeekOnSunday} />
       </CalendarContainer>
     </ThemeProvider>
   );

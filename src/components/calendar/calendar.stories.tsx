@@ -7,6 +7,9 @@ export default {
   component: Calendar,
 } as Meta;
 
-const Template: StoryFn = () => <Calendar />;
+const Template: StoryFn<typeof Calendar> = (args) => <Calendar {...args} />;
 
 export const Default = Template.bind({});
+Default.args = {
+  startWeekOnSunday: true,
+};

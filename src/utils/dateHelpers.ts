@@ -4,14 +4,20 @@ export const getDaysInMonth = (year: number, month: number) => {
   return new Date(year, month + 1, 0).getDate();
 };
 
-export const getFirstDayOfMonth = (year: number, month: number) => {
-  return new Date(year, month, 1).getDay();
+export const getFirstDayOfMonth = (year: number, month: number, startWeekOnSunday = true) => {
+  const firstDay = new Date(year, month, 1).getDay();
+
+  if (startWeekOnSunday) {
+    return firstDay;
+  }
+  return firstDay === 0 ? 6 : firstDay - 1;
 };
 
-export const getCalendarDays = (year: number, month: number): CalendarDay[] => {
+export const getCalendarDays = (year: number, month: number, startWeekOnSunday = true): CalendarDay[] => {
   const daysInMonth = getDaysInMonth(year, month);
 
-  const firstDayOfWeek = getFirstDayOfMonth(year, month);
+  const firstDayOfWeek = getFirstDayOfMonth(year, month, startWeekOnSunday);
+
   const lastDayOfWeek = (firstDayOfWeek + daysInMonth) % 7;
 
   const prevMonth = month === 0 ? 11 : month - 1;
@@ -22,7 +28,7 @@ export const getCalendarDays = (year: number, month: number): CalendarDay[] => {
     month: prevMonth,
     year: prevMonthYear,
     isCurrentMonth: false,
-  }));
+  })).reverse();
 
   const currentMonthDaysArray: CalendarDay[] = Array.from({ length: daysInMonth }, (_, i) => ({
     day: i + 1,
@@ -53,4 +59,11 @@ export const isToday = (year: number, month: number, day: number): boolean => {
 
 export const getMonthName = (month: number) => {
   return new Date(0, month).toLocaleString("en-US", { month: "long" });
+};
+
+export const getWeekDaysNames = (startWeekOnSunday = true) => {
+  if (startWeekOnSunday) {
+    return ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+  }
+  return ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
 };

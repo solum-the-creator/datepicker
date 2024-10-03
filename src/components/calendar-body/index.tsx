@@ -1,4 +1,5 @@
-import { getCalendarDays, isToday } from "@utils/dateHelpers";
+import { useMemo } from "react";
+import { getCalendarDays, getWeekDaysNames, isToday } from "@utils/dateHelpers";
 
 import {
   CalendarBodyContainer,
@@ -11,12 +12,16 @@ import {
 type CalendarBodyProps = {
   month: number;
   year: number;
+  startWeekOnSunday?: boolean;
 };
 
-export const CalendarBody: React.FC<CalendarBodyProps> = ({ month, year }) => {
-  const weekDays = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+export const CalendarBody: React.FC<CalendarBodyProps> = ({ month, year, startWeekOnSunday = true }) => {
+  const weekDays = useMemo(() => getWeekDaysNames(startWeekOnSunday), [startWeekOnSunday]);
 
-  const days = getCalendarDays(year, month);
+  const days = useMemo(
+    () => getCalendarDays(year, month, startWeekOnSunday),
+    [year, month, startWeekOnSunday]
+  );
 
   return (
     <CalendarBodyContainer>
