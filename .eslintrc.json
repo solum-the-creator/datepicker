@@ -80,9 +80,11 @@
     "react/prefer-stateless-function": "off",
     "jsx-a11y/label-has-associated-control": "off",
     "jsx-a11y/control-has-associated-label": "off",
+    "arrow-body-style": "off",
     "react/prop-types": "off",
     "import/no-extraneous-dependencies": "off",
     "no-nested-ternary": "off",
+    "no-plusplus": "off",
     "no-console": ["error", { "allow": ["warn", "error"] }],
     "react/jsx-props-no-spreading": "off"
   }

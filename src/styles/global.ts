@@ -26,6 +26,13 @@ const GlobalStyles = createGlobalStyle`
     ul {
         list-style: none;
     }
+
+    button {
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        font-family: "Open Sans", sans-serif;
+    }
 `;
 
 export default GlobalStyles;
