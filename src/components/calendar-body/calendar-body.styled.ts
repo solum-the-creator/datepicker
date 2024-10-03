@@ -18,18 +18,18 @@ export const WeekDayCell = styled.p`
 export const DatesGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: repeat(5, 32px);
+  grid-auto-rows: 32px;
 `;
 
-export const DayCell = styled.button<{ isCurrentMonth: boolean; isToday: boolean }>`
+export const DayCell = styled.button<{ $isCurrentMonth: boolean; $isToday: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
 
-  color: ${({ theme, isCurrentMonth }) =>
-    isCurrentMonth ? theme.colors.secondary : theme.colors.disabledText};
+  color: ${({ theme, $isCurrentMonth }) =>
+    $isCurrentMonth ? theme.colors.secondary : theme.colors.disabledText};
 
-  background-color: ${({ theme, isToday }) => (isToday ? theme.colors.hoverBackground : "transparent")};
+  background-color: ${({ theme, $isToday }) => ($isToday ? theme.colors.hoverBackground : "transparent")};
   border: none;
   border-radius: 8px;
 

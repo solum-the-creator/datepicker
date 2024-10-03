@@ -27,13 +27,13 @@ export const CalendarBody: React.FC<CalendarBodyProps> = ({ month, year }) => {
       </WeekDaysHeader>
 
       <DatesGrid>
-        {days.map(({ day, isCurrentMonth }) => (
+        {days.map(({ day, month: currentMonth, year: currentYear, isCurrentMonth }) => (
           <DayCell
-            key={day}
+            key={`${currentYear}-${currentMonth}-${day}`}
             type="button"
             role="gridcell"
-            isCurrentMonth={isCurrentMonth}
-            isToday={isToday(year, month, day)}>
+            $isCurrentMonth={isCurrentMonth}
+            $isToday={isToday(currentYear, currentMonth, day)}>
             {day}
           </DayCell>
         ))}

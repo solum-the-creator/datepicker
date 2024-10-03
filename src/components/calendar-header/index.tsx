@@ -2,17 +2,19 @@ import { ArrowButton, HeaderContainer, MonthYearText } from "./calendar-header.s
 
 type CalendarHeaderProps = {
   month: string;
-  year: string;
+  year: number;
+  onPrevClick: () => void;
+  onNextClick: () => void;
 };
 
-export const CalendarHeader: React.FC<CalendarHeaderProps> = ({ month, year }) => {
+export const CalendarHeader: React.FC<CalendarHeaderProps> = ({ month, year, onPrevClick, onNextClick }) => {
   return (
     <HeaderContainer>
-      <ArrowButton>{"<<"}</ArrowButton>
+      <ArrowButton onClick={onPrevClick}>{"<<"}</ArrowButton>
       <MonthYearText>
         {month} {year}
       </MonthYearText>
-      <ArrowButton>{">>"}</ArrowButton>
+      <ArrowButton onClick={onNextClick}>{">>"}</ArrowButton>
     </HeaderContainer>
   );
 };
