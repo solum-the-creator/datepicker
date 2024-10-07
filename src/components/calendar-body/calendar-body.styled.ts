@@ -21,13 +21,28 @@ export const DatesGrid = styled.div`
   grid-auto-rows: 32px;
 `;
 
-export const DayCell = styled.button<{ $isCurrentMonth: boolean; $isToday: boolean }>`
+export const DayCell = styled.button<{
+  $isCurrentMonth: boolean;
+  $isToday: boolean;
+  $isWeekend: boolean;
+  $isHoliday: boolean;
+}>`
   display: flex;
   justify-content: center;
   align-items: center;
 
-  color: ${({ theme, $isCurrentMonth }) =>
-    $isCurrentMonth ? theme.colors.secondary : theme.colors.disabledText};
+  color: ${({ theme, $isCurrentMonth, $isWeekend, $isHoliday }) => {
+    switch (true) {
+      case $isCurrentMonth && $isWeekend:
+        return theme.colors.red;
+      case $isCurrentMonth && $isHoliday:
+        return theme.colors.red;
+      case !$isCurrentMonth:
+        return theme.colors.disabledText;
+      default:
+        return theme.colors.secondary;
+    }
+  }};
 
   background-color: ${({ theme, $isToday }) => ($isToday ? theme.colors.hoverBackground : "transparent")};
   border: none;

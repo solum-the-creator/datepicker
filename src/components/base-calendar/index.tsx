@@ -1,11 +1,19 @@
 import { useState } from "react";
 import { Calendar } from "@components/calendar";
+import { Holiday } from "@customTypes/holidays";
 
 type BaseCalendarProps = {
   startWeekOnSunday?: boolean;
+  highlightWeekends?: boolean;
+  highlightHolidays?: boolean;
+  holidays?: Holiday[];
 };
 
-export const BaseCalendar: React.FC<BaseCalendarProps> = ({ startWeekOnSunday = true }) => {
+export const BaseCalendar: React.FC<BaseCalendarProps> = ({
+  startWeekOnSunday = true,
+  highlightWeekends = true,
+  highlightHolidays = false,
+}) => {
   const today = new Date();
 
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
@@ -22,6 +30,8 @@ export const BaseCalendar: React.FC<BaseCalendarProps> = ({ startWeekOnSunday = 
       currentYear={currentYear}
       onMonthChange={handleMonthChange}
       startWeekOnSunday={startWeekOnSunday}
+      highlightWeekends={highlightWeekends}
+      highlightHolidays={highlightHolidays}
     />
   );
 };

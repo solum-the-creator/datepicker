@@ -1,4 +1,5 @@
 import { CalendarDay } from "@customTypes/days";
+import { Holiday } from "@customTypes/holidays";
 
 export const getDaysInMonth = (year: number, month: number) => {
   return new Date(year, month + 1, 0).getDate();
@@ -66,4 +67,24 @@ export const getWeekDaysNames = (startWeekOnSunday = true) => {
     return ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
   }
   return ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
+};
+
+export const isWeekend = (dayIndex: number, startWeekOnSunday: boolean): boolean => {
+  if (startWeekOnSunday) {
+    return dayIndex === 0 || dayIndex === 6;
+  }
+  return dayIndex === 5 || dayIndex === 6;
+};
+
+export const isHoliday = (date: Date, holidays: Holiday[]): boolean => {
+  return holidays.some(({ date: holidayDate, isRecurring }) => {
+    if (isRecurring) {
+      return holidayDate.getDate() === date.getDate() && holidayDate.getMonth() === date.getMonth();
+    }
+    return (
+      holidayDate.getDate() === date.getDate() &&
+      holidayDate.getMonth() === date.getMonth() &&
+      holidayDate.getFullYear() === date.getFullYear()
+    );
+  });
 };

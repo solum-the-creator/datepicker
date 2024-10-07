@@ -1,5 +1,8 @@
 import { useMemo } from "react";
-import { getCalendarDays, getWeekDaysNames, isToday } from "@utils/dateHelpers";
+import { Holiday } from "@customTypes/holidays";
+import { getCalendarDays, getWeekDaysNames, isHoliday, isToday, isWeekend } from "@utils/dateHelpers";
+
+import { defaultHolidays } from "@/constants/holidays";
 
 import {
   CalendarBodyContainer,
@@ -13,9 +16,19 @@ type CalendarBodyProps = {
   month: number;
   year: number;
   startWeekOnSunday?: boolean;
+  highlightWeekends?: boolean;
+  highlightHolidays?: boolean;
+  holidays?: Holiday[];
 };
 
-export const CalendarBody: React.FC<CalendarBodyProps> = ({ month, year, startWeekOnSunday = true }) => {
+export const CalendarBody: React.FC<CalendarBodyProps> = ({
+  month,
+  year,
+  startWeekOnSunday = true,
+  highlightWeekends = false,
+  highlightHolidays = false,
+  holidays = defaultHolidays,
+}) => {
   const weekDays = useMemo(() => getWeekDaysNames(startWeekOnSunday), [startWeekOnSunday]);
 
   const days = useMemo(
@@ -32,13 +45,15 @@ export const CalendarBody: React.FC<CalendarBodyProps> = ({ month, year, startWe
       </WeekDaysHeader>
 
       <DatesGrid>
-        {days.map(({ day, month: currentMonth, year: currentYear, isCurrentMonth }) => (
+        {days.map(({ day, month: currentMonth, year: currentYear, isCurrentMonth }, index) => (
           <DayCell
             key={`${currentYear}-${currentMonth}-${day}`}
             type="button"
             role="gridcell"
             $isCurrentMonth={isCurrentMonth}
-            $isToday={isToday(currentYear, currentMonth, day)}>
+            $isToday={isToday(currentYear, currentMonth, day)}
+            $isWeekend={highlightWeekends && isWeekend(index % 7, startWeekOnSunday)}
+            $isHoliday={highlightHolidays && isHoliday(new Date(year, month, day), holidays)}>
             {day}
           </DayCell>
         ))}

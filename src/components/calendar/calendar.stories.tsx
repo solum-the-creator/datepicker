@@ -12,4 +12,6 @@ const Template: StoryFn<typeof Calendar> = (args) => <Calendar {...args} />;
 export const Default = Template.bind({});
 Default.args = {
   startWeekOnSunday: true,
+  highlightWeekends: true,
+  highlightHolidays: false,
 };
