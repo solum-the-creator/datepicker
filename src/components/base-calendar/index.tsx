@@ -16,6 +16,7 @@ export const BaseCalendar: React.FC<BaseCalendarProps> = ({
 }) => {
   const today = new Date();
 
+  const [selectedDate, setSelectedDate] = useState<Date>(today);
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
 
@@ -32,6 +33,8 @@ export const BaseCalendar: React.FC<BaseCalendarProps> = ({
       startWeekOnSunday={startWeekOnSunday}
       highlightWeekends={highlightWeekends}
       highlightHolidays={highlightHolidays}
+      selectedDate={selectedDate}
+      onDateSelect={setSelectedDate}
     />
   );
 };

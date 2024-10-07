@@ -1,6 +1,13 @@
 import { useMemo } from "react";
 import { Holiday } from "@customTypes/holidays";
-import { getCalendarDays, getWeekDaysNames, isHoliday, isToday, isWeekend } from "@utils/dateHelpers";
+import {
+  getCalendarDays,
+  getWeekDaysNames,
+  isHoliday,
+  isSameDate,
+  isToday,
+  isWeekend,
+} from "@utils/dateHelpers";
 
 import { defaultHolidays } from "@/constants/holidays";
 
@@ -15,15 +22,19 @@ import {
 type CalendarBodyProps = {
   month: number;
   year: number;
+  selectedDate?: Date;
   startWeekOnSunday?: boolean;
   highlightWeekends?: boolean;
   highlightHolidays?: boolean;
   holidays?: Holiday[];
+  onDateSelect?: (date: Date) => void;
 };
 
 export const CalendarBody: React.FC<CalendarBodyProps> = ({
   month,
   year,
+  selectedDate,
+  onDateSelect,
   startWeekOnSunday = true,
   highlightWeekends = false,
   highlightHolidays = false,
@@ -35,6 +46,14 @@ export const CalendarBody: React.FC<CalendarBodyProps> = ({
     () => getCalendarDays(year, month, startWeekOnSunday),
     [year, month, startWeekOnSunday]
   );
+
+  const handleDateClick = (day: number, month: number, year: number) => {
+    const newSelectedDate = new Date(year, month, day);
+
+    if (onDateSelect) {
+      onDateSelect(newSelectedDate);
+    }
+  };
 
   return (
     <CalendarBodyContainer>
@@ -50,10 +69,12 @@ export const CalendarBody: React.FC<CalendarBodyProps> = ({
             key={`${currentYear}-${currentMonth}-${day}`}
             type="button"
             role="gridcell"
+            onClick={() => handleDateClick(day, currentMonth, currentYear)}
             $isCurrentMonth={isCurrentMonth}
             $isToday={isToday(currentYear, currentMonth, day)}
             $isWeekend={highlightWeekends && isWeekend(index % 7, startWeekOnSunday)}
-            $isHoliday={highlightHolidays && isHoliday(new Date(currentYear, currentMonth, day), holidays)}>
+            $isHoliday={highlightHolidays && isHoliday(new Date(currentYear, currentMonth, day), holidays)}
+            $isSelected={selectedDate && isSameDate(selectedDate, new Date(currentYear, currentMonth, day))}>
             {day}
           </DayCell>
         ))}

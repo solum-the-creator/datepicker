@@ -11,18 +11,22 @@ import { CalendarContainer } from "./calendar.styled";
 type CalendarProps = {
   currentMonth: number;
   currentYear: number;
+  selectedDate?: Date;
   startWeekOnSunday?: boolean;
   highlightWeekends?: boolean;
   highlightHolidays?: boolean;
   holidays?: Holiday[];
   onMonthChange?: (month: number, year: number) => void;
+  onDateSelect?: (date: Date) => void;
 };
 
 export const Calendar: React.FC<CalendarProps> = ({
   currentMonth,
   currentYear,
   onMonthChange,
+  onDateSelect,
   holidays,
+  selectedDate,
   highlightHolidays = false,
   highlightWeekends = false,
   startWeekOnSunday = true,
@@ -37,6 +41,10 @@ export const Calendar: React.FC<CalendarProps> = ({
     const newMonth = currentMonth === 11 ? 0 : currentMonth + 1;
     const newYear = currentMonth === 11 ? currentYear + 1 : currentYear;
     onMonthChange?.(newMonth, newYear);
+  };
+
+  const handleDateClick = (date: Date) => {
+    onDateSelect?.(date);
   };
 
   return (
@@ -57,6 +65,8 @@ export const Calendar: React.FC<CalendarProps> = ({
           highlightWeekends={highlightWeekends}
           highlightHolidays={highlightHolidays}
           holidays={holidays}
+          selectedDate={selectedDate}
+          onDateSelect={handleDateClick}
         />
       </CalendarContainer>
     </ThemeProvider>
