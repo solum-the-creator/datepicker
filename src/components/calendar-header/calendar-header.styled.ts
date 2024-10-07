@@ -10,10 +10,28 @@ export const HeaderContainer = styled.div`
 export const MonthYearText = styled.div`
   text-align: center;
   font-weight: 700;
+
+  display: flex;
+  gap: 0.4rem;
 `;
 
 export const ArrowButton = styled.button`
   background-color: transparent;
   border: none;
   cursor: pointer;
+`;
+
+export const TextButton = styled.button`
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+
+  color: ${({ theme }) => theme.colors.primary};
+  font-weight: 700;
+
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.active};
+  }
 `;

@@ -22,10 +22,10 @@ export const DatesGrid = styled.div`
 `;
 
 export const DayCell = styled.button<{
-  $isCurrentMonth: boolean;
-  $isToday: boolean;
-  $isWeekend: boolean;
-  $isHoliday: boolean;
+  $isCurrentMonth?: boolean;
+  $isToday?: boolean;
+  $isWeekend?: boolean;
+  $isHoliday?: boolean;
   $isDisabled?: boolean;
   $isSelected?: boolean;
 }>`

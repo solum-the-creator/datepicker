@@ -17,9 +17,9 @@ import {
   DayCell,
   WeekDayCell,
   WeekDaysHeader,
-} from "./calendar-body.styled";
+} from "./calendar-days-view.styled";
 
-type CalendarBodyProps = {
+type CalendarDaysViewProps = {
   month: number;
   year: number;
   selectedDate?: Date;
@@ -32,7 +32,7 @@ type CalendarBodyProps = {
   maxDate?: Date;
 };
 
-export const CalendarBody: React.FC<CalendarBodyProps> = ({
+export const CalendarDaysView: React.FC<CalendarDaysViewProps> = ({
   month,
   year,
   selectedDate,
