@@ -53,7 +53,7 @@ export const CalendarBody: React.FC<CalendarBodyProps> = ({
             $isCurrentMonth={isCurrentMonth}
             $isToday={isToday(currentYear, currentMonth, day)}
             $isWeekend={highlightWeekends && isWeekend(index % 7, startWeekOnSunday)}
-            $isHoliday={highlightHolidays && isHoliday(new Date(year, month, day), holidays)}>
+            $isHoliday={highlightHolidays && isHoliday(new Date(currentYear, currentMonth, day), holidays)}>
             {day}
           </DayCell>
         ))}
