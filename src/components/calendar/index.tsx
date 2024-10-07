@@ -16,6 +16,8 @@ type CalendarProps = {
   highlightWeekends?: boolean;
   highlightHolidays?: boolean;
   holidays?: Holiday[];
+  minDate?: Date;
+  maxDate?: Date;
   onMonthChange?: (month: number, year: number) => void;
   onDateSelect?: (date: Date) => void;
 };
@@ -27,6 +29,8 @@ export const Calendar: React.FC<CalendarProps> = ({
   onDateSelect,
   holidays,
   selectedDate,
+  minDate,
+  maxDate,
   highlightHolidays = false,
   highlightWeekends = false,
   startWeekOnSunday = true,
@@ -61,6 +65,8 @@ export const Calendar: React.FC<CalendarProps> = ({
         <CalendarBody
           month={currentMonth}
           year={currentYear}
+          minDate={minDate}
+          maxDate={maxDate}
           startWeekOnSunday={startWeekOnSunday}
           highlightWeekends={highlightWeekends}
           highlightHolidays={highlightHolidays}

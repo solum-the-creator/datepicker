@@ -25,6 +25,9 @@ export const BaseCalendar: React.FC<BaseCalendarProps> = ({
     setCurrentYear(year);
   };
 
+  const minDate = new Date(today.getFullYear(), today.getMonth(), 4);
+  const maxDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
   return (
     <Calendar
       currentMonth={currentMonth}
@@ -35,6 +38,8 @@ export const BaseCalendar: React.FC<BaseCalendarProps> = ({
       highlightHolidays={highlightHolidays}
       selectedDate={selectedDate}
       onDateSelect={setSelectedDate}
+      minDate={minDate}
+      maxDate={maxDate}
     />
   );
 };

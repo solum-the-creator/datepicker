@@ -26,14 +26,17 @@ export const DayCell = styled.button<{
   $isToday: boolean;
   $isWeekend: boolean;
   $isHoliday: boolean;
+  $isDisabled?: boolean;
   $isSelected?: boolean;
 }>`
   display: flex;
   justify-content: center;
   align-items: center;
 
-  color: ${({ theme, $isCurrentMonth, $isWeekend, $isHoliday, $isSelected }) => {
+  color: ${({ theme, $isCurrentMonth, $isWeekend, $isHoliday, $isSelected, $isDisabled }) => {
     switch (true) {
+      case $isDisabled:
+        return theme.colors.disabledText;
       case $isSelected:
         return theme.colors.activeText;
       case $isCurrentMonth && $isWeekend:
@@ -68,5 +71,10 @@ export const DayCell = styled.button<{
 
   &:hover {
     background-color: ${({ theme, $isSelected }) => !$isSelected && theme.colors.hoverBackground};
+  }
+
+  &:disabled {
+    cursor: auto;
+    background-color: transparent;
   }
 `;

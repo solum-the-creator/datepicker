@@ -28,6 +28,8 @@ type CalendarBodyProps = {
   highlightHolidays?: boolean;
   holidays?: Holiday[];
   onDateSelect?: (date: Date) => void;
+  minDate?: Date;
+  maxDate?: Date;
 };
 
 export const CalendarBody: React.FC<CalendarBodyProps> = ({
@@ -35,6 +37,8 @@ export const CalendarBody: React.FC<CalendarBodyProps> = ({
   year,
   selectedDate,
   onDateSelect,
+  minDate,
+  maxDate,
   startWeekOnSunday = true,
   highlightWeekends = false,
   highlightHolidays = false,
@@ -47,8 +51,16 @@ export const CalendarBody: React.FC<CalendarBodyProps> = ({
     [year, month, startWeekOnSunday]
   );
 
+  const isDateDisabled = (date: Date): boolean => {
+    return !!(minDate && date < minDate) || !!(maxDate && date > maxDate);
+  };
+
   const handleDateClick = (day: number, month: number, year: number) => {
     const newSelectedDate = new Date(year, month, day);
+
+    if (isDateDisabled(newSelectedDate)) {
+      return;
+    }
 
     if (onDateSelect) {
       onDateSelect(newSelectedDate);
@@ -69,12 +81,14 @@ export const CalendarBody: React.FC<CalendarBodyProps> = ({
             key={`${currentYear}-${currentMonth}-${day}`}
             type="button"
             role="gridcell"
+            disabled={isDateDisabled(new Date(currentYear, currentMonth, day))}
             onClick={() => handleDateClick(day, currentMonth, currentYear)}
             $isCurrentMonth={isCurrentMonth}
             $isToday={isToday(currentYear, currentMonth, day)}
             $isWeekend={highlightWeekends && isWeekend(index % 7, startWeekOnSunday)}
             $isHoliday={highlightHolidays && isHoliday(new Date(currentYear, currentMonth, day), holidays)}
-            $isSelected={selectedDate && isSameDate(selectedDate, new Date(currentYear, currentMonth, day))}>
+            $isSelected={selectedDate && isSameDate(selectedDate, new Date(currentYear, currentMonth, day))}
+            $isDisabled={isDateDisabled(new Date(currentYear, currentMonth, day))}>
             {day}
           </DayCell>
         ))}
