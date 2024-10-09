@@ -18,6 +18,7 @@ export function withPickerLogic<P extends WithPickerLogicProps>(WrappedComponent
 
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [inputValue, setInputValue] = useState(value ? formatDate(value) : "");
+    const [isError, setIsError] = useState(false);
 
     const pickerRef = useRef<HTMLDivElement>(null);
 
@@ -44,13 +45,20 @@ export function withPickerLogic<P extends WithPickerLogicProps>(WrappedComponent
       const input = e.target.value;
       setInputValue(input);
 
-      const parsedDate = parseDate(input);
-      if (parsedDate) {
-        if (!isDateWithinRange(parsedDate, minDate, maxDate)) {
-          console.log("Date is out of range");
-          return;
+      if (input.length >= 10) {
+        const parsedDate = parseDate(input);
+        if (parsedDate) {
+          if (!isDateWithinRange(parsedDate, minDate, maxDate)) {
+            setIsError(true);
+          } else {
+            setIsError(false);
+            onSelect?.(parsedDate);
+          }
+        } else {
+          setIsError(true);
         }
-        onSelect?.(parsedDate);
+      } else {
+        setIsError(false);
       }
     };
 
@@ -60,6 +68,7 @@ export function withPickerLogic<P extends WithPickerLogicProps>(WrappedComponent
 
     const handleClearClick = () => {
       setIsCalendarOpen(false);
+      setIsError(false);
       setInputValue("");
       onSelect?.(undefined);
     };
@@ -71,6 +80,7 @@ export function withPickerLogic<P extends WithPickerLogicProps>(WrappedComponent
           onChange={handleInputChange}
           onFocus={handleFocus}
           onClear={handleClearClick}
+          isError={isError}
         />
 
         {isCalendarOpen && (

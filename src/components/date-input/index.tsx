@@ -7,12 +7,13 @@ import { ClearButton, IconContainer, Input, InputContainer } from "./date-input.
 
 type DateInputProps = {
   value: string;
+  isError?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onFocus?: () => void;
   onClear?: () => void;
 };
 
-export const DateInput: React.FC<DateInputProps> = ({ value, onChange, onFocus, onClear }) => {
+export const DateInput: React.FC<DateInputProps> = ({ value, isError, onChange, onFocus, onClear }) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formattedValue = formatDateInputValue(e.target.value);
 
@@ -21,7 +22,7 @@ export const DateInput: React.FC<DateInputProps> = ({ value, onChange, onFocus, 
 
   return (
     <ThemeWrapper>
-      <InputContainer>
+      <InputContainer $isError={isError}>
         <IconContainer>
           <CalendarIcon />
         </IconContainer>

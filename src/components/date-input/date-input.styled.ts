@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const InputContainer = styled.div`
+export const InputContainer = styled.div<{ $isError?: boolean }>`
   width: 100%;
   max-width: 250px;
   display: flex;
@@ -8,16 +8,18 @@ export const InputContainer = styled.div`
 
   gap: 0.5rem;
 
-  border: 1px solid ${({ theme }) => theme.colors.border};
+  border: 1px solid;
   border-radius: 0.5rem;
   padding: 0.8rem 1rem;
 
+  border-color: ${({ theme, $isError }) => ($isError ? theme.colors.red : theme.colors.border)};
+
   &:focus-within {
-    border: 1px solid ${({ theme }) => theme.colors.primary};
+    border: 1px solid ${({ $isError, theme }) => ($isError ? theme.colors.red : theme.colors.primary)};
   }
 `;
 
-export const Input = styled.input`
+export const Input = styled.input<{ $isError?: boolean }>`
   width: 100%;
   font-size: 1rem;
   border: none;
