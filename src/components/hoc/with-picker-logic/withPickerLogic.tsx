@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { DateInput } from "@components/date-input";
 import { isDateWithinRange } from "@utils/dateHelpers";
 import { formatDate, parseDate } from "@utils/formatDatesHelpers";
@@ -18,6 +18,21 @@ export function withPickerLogic<P extends WithPickerLogicProps>(WrappedComponent
 
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [inputValue, setInputValue] = useState(value ? formatDate(value) : "");
+
+    const pickerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+      const handleClickOutside = (e: MouseEvent) => {
+        if (pickerRef.current && !pickerRef.current.contains(e.target as Node)) {
+          setIsCalendarOpen(false);
+        }
+      };
+
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, []);
 
     const handleDateSelect = (date: Date) => {
       setInputValue(formatDate(date));
@@ -44,12 +59,13 @@ export function withPickerLogic<P extends WithPickerLogicProps>(WrappedComponent
     };
 
     const handleClearClick = () => {
+      setIsCalendarOpen(false);
       setInputValue("");
       onSelect?.(undefined);
     };
 
     return (
-      <PickerContainer>
+      <PickerContainer ref={pickerRef}>
         <DateInput
           value={inputValue}
           onChange={handleInputChange}

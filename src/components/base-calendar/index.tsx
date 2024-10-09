@@ -15,7 +15,7 @@ type BaseCalendarProps = {
 const CalendarWithLogic = withCalendarLogic(Calendar);
 
 export const BaseCalendar: React.FC<BaseCalendarProps> = () => {
-  const [value, setValue] = useState<Date>(new Date());
+  const [value, setValue] = useState<Date | undefined>(new Date());
   return (
     <CalendarWithLogic
       value={value}
