@@ -3,7 +3,7 @@ import { isDateWithinRange } from "@utils/dateHelpers";
 
 export type CalendarLogicProps = {
   value?: Date;
-  onSelect?: (value: Date) => void;
+  onSelect?: (value?: Date) => void;
   minDate?: Date;
   maxDate?: Date;
 };

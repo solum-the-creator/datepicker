@@ -3,9 +3,11 @@ import { DateInput } from "@components/date-input";
 import { isDateWithinRange } from "@utils/dateHelpers";
 import { formatDate, parseDate } from "@utils/formatDatesHelpers";
 
+import { CalendarContainer, PickerContainer } from "./with-picker-logic.styled";
+
 type WithPickerLogicProps = {
   value?: Date;
-  onSelect?: (date: Date) => void;
+  onSelect?: (date?: Date) => void;
   minDate?: Date;
   maxDate?: Date;
 };
@@ -41,19 +43,32 @@ export function withPickerLogic<P extends WithPickerLogicProps>(WrappedComponent
       setIsCalendarOpen(true);
     };
 
+    const handleClearClick = () => {
+      setInputValue("");
+      onSelect?.(undefined);
+    };
+
     return (
-      <>
-        <DateInput value={inputValue} onChange={handleInputChange} onFocus={handleFocus} />
+      <PickerContainer>
+        <DateInput
+          value={inputValue}
+          onChange={handleInputChange}
+          onFocus={handleFocus}
+          onClear={handleClearClick}
+        />
+
         {isCalendarOpen && (
-          <WrappedComponent
-            {...(rest as P)}
-            value={value}
-            onSelect={handleDateSelect}
-            minDate={minDate}
-            maxDate={maxDate}
-          />
+          <CalendarContainer>
+            <WrappedComponent
+              {...(rest as P)}
+              value={value}
+              onSelect={handleDateSelect}
+              minDate={minDate}
+              maxDate={maxDate}
+            />
+          </CalendarContainer>
         )}
-      </>
+      </PickerContainer>
     );
   };
 }
