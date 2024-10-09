@@ -12,5 +12,13 @@ type BaseCalendarProps = {
 const CalendarWithLogic = withCalendarLogic(Calendar);
 
 export const BaseCalendar: React.FC<BaseCalendarProps> = () => {
-  return <CalendarWithLogic startWeekOnSunday={false} highlightHolidays={true} highlightWeekends={true} />;
+  return (
+    <CalendarWithLogic
+      startWeekOnSunday={false}
+      highlightHolidays={true}
+      highlightWeekends={true}
+      minDate={new Date(2024, 9, 1)}
+      maxDate={new Date(2024, 9, 20)}
+    />
+  );
 };

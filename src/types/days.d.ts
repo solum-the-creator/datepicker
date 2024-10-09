@@ -3,4 +3,8 @@ export type CalendarDay = {
   month: number;
   year: number;
   isCurrentMonth: boolean;
+  isToday?: boolean;
+  isDisabled?: boolean;
+  isWeekend?: boolean;
+  isHoliday?: boolean;
 };

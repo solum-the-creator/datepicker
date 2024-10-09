@@ -1,13 +1,6 @@
 import { useMemo } from "react";
 import { Holiday } from "@customTypes/holidays";
-import {
-  getCalendarDays,
-  getWeekDaysNames,
-  isHoliday,
-  isSameDate,
-  isToday,
-  isWeekend,
-} from "@utils/dateHelpers";
+import { enhanceCalendarDays, getCalendarDays, getWeekDaysNames, isSameDate } from "@utils/dateHelpers";
 
 import { defaultHolidays } from "@/constants/holidays";
 
@@ -51,16 +44,13 @@ export const CalendarDaysView: React.FC<CalendarDaysViewProps> = ({
     [year, month, startWeekOnSunday]
   );
 
-  const isDateDisabled = (date: Date): boolean => {
-    return !!(minDate && date < minDate) || !!(maxDate && date > maxDate);
-  };
+  const enhancedDays = useMemo(
+    () => enhanceCalendarDays(days, startWeekOnSunday, minDate, maxDate, holidays),
+    [days, startWeekOnSunday, minDate, maxDate, holidays]
+  );
 
   const handleDateClick = (day: number, month: number, year: number) => {
     const newSelectedDate = new Date(year, month, day);
-
-    if (isDateDisabled(newSelectedDate)) {
-      return;
-    }
 
     if (onDateSelect) {
       onDateSelect(newSelectedDate);
@@ -76,22 +66,33 @@ export const CalendarDaysView: React.FC<CalendarDaysViewProps> = ({
       </WeekDaysHeader>
 
       <DatesGrid>
-        {days.map(({ day, month: currentMonth, year: currentYear, isCurrentMonth }, index) => (
-          <DayCell
-            key={`${currentYear}-${currentMonth}-${day}`}
-            type="button"
-            role="gridcell"
-            disabled={isDateDisabled(new Date(currentYear, currentMonth, day))}
-            onClick={() => handleDateClick(day, currentMonth, currentYear)}
-            $isCurrentMonth={isCurrentMonth}
-            $isToday={isToday(currentYear, currentMonth, day)}
-            $isWeekend={highlightWeekends && isWeekend(index % 7, startWeekOnSunday)}
-            $isHoliday={highlightHolidays && isHoliday(new Date(currentYear, currentMonth, day), holidays)}
-            $isSelected={selectedDate && isSameDate(selectedDate, new Date(currentYear, currentMonth, day))}
-            $isDisabled={isDateDisabled(new Date(currentYear, currentMonth, day))}>
-            {day}
-          </DayCell>
-        ))}
+        {enhancedDays.map(
+          ({
+            day,
+            month: currentMonth,
+            year: currentYear,
+            isCurrentMonth,
+            isToday,
+            isDisabled,
+            isHoliday,
+            isWeekend,
+          }) => (
+            <DayCell
+              key={`${currentYear}-${currentMonth}-${day}`}
+              type="button"
+              role="gridcell"
+              disabled={isDisabled}
+              onClick={() => handleDateClick(day, currentMonth, currentYear)}
+              $isCurrentMonth={isCurrentMonth}
+              $isToday={isToday}
+              $isWeekend={highlightWeekends && isWeekend}
+              $isHoliday={highlightHolidays && isHoliday}
+              $isSelected={selectedDate && isSameDate(selectedDate, new Date(currentYear, currentMonth, day))}
+              $isDisabled={isDisabled}>
+              {day}
+            </DayCell>
+          )
+        )}
       </DatesGrid>
     </CalendarBodyContainer>
   );

@@ -1,21 +1,24 @@
 import { ComponentType, useState } from "react";
+import { isDateWithinRange } from "@utils/dateHelpers";
 
 export type CalendarLogicProps = {
   value?: Date;
+  minDate?: Date;
+  maxDate?: Date;
   onSelect?: (value: Date) => void;
 };
 
 type WithCalendarLogicProps = {
-  selectedDate?: Date;
   currentMonth: number;
   currentYear: number;
+  selectedDate?: Date;
   onDateSelect?: (date: Date) => void;
   onMonthChange?: (month: number, year: number) => void;
 };
 
 export function withCalendarLogic<P extends WithCalendarLogicProps>(WrappedComponent: ComponentType<P>) {
   return (props: Omit<P, keyof WithCalendarLogicProps> & CalendarLogicProps) => {
-    const { value, onSelect, ...rest } = props;
+    const { value, onSelect, minDate, maxDate, ...rest } = props;
 
     const currentDate = value || new Date();
 
@@ -24,8 +27,10 @@ export function withCalendarLogic<P extends WithCalendarLogicProps>(WrappedCompo
     const [selectedDate, setSelectedDate] = useState<Date | undefined>(value);
 
     const handleDateSelect = (date: Date) => {
-      setSelectedDate(date);
-      onSelect?.(date);
+      if (isDateWithinRange(date, minDate, maxDate)) {
+        setSelectedDate(date);
+        onSelect?.(date);
+      }
     };
 
     const handleMonthChange = (newMonth: number, newYear: number) => {
@@ -39,6 +44,8 @@ export function withCalendarLogic<P extends WithCalendarLogicProps>(WrappedCompo
         selectedDate={selectedDate}
         currentMonth={currentMonth}
         currentYear={currentYear}
+        minDate={minDate}
+        maxDate={maxDate}
         onDateSelect={handleDateSelect}
         onMonthChange={handleMonthChange}
       />

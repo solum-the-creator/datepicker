@@ -14,40 +14,50 @@ export const getFirstDayOfMonth = (year: number, month: number, startWeekOnSunda
   return firstDay === 0 ? 6 : firstDay - 1;
 };
 
-export const getCalendarDays = (year: number, month: number, startWeekOnSunday = true): CalendarDay[] => {
-  const daysInMonth = getDaysInMonth(year, month);
+const createDaysArray = (
+  year: number,
+  month: number,
+  length: number,
+  isCurrentMonth: boolean
+): CalendarDay[] => {
+  return Array.from({ length }, (_, i) => ({
+    day: i + 1,
+    month,
+    year,
+    isCurrentMonth,
+  }));
+};
 
-  const firstDayOfWeek = getFirstDayOfMonth(year, month, startWeekOnSunday);
-
-  const lastDayOfWeek = (firstDayOfWeek + daysInMonth) % 7;
-
+const getPreviousMonthDays = (year: number, month: number, firstDayOfWeek: number): CalendarDay[] => {
   const prevMonth = month === 0 ? 11 : month - 1;
   const prevMonthYear = month === 0 ? year - 1 : year;
 
-  const prevMonthDaysArray: CalendarDay[] = Array.from({ length: firstDayOfWeek }, (_, i) => ({
+  return Array.from({ length: firstDayOfWeek }, (_, i) => ({
     day: new Date(year, month, -i).getDate(),
     month: prevMonth,
     year: prevMonthYear,
     isCurrentMonth: false,
   })).reverse();
+};
 
-  const currentMonthDaysArray: CalendarDay[] = Array.from({ length: daysInMonth }, (_, i) => ({
-    day: i + 1,
-    month,
-    year,
-    isCurrentMonth: true,
-  }));
-
+const getNextMonthDays = (year: number, month: number, remainingDays: number): CalendarDay[] => {
   const nextMonth = month === 11 ? 0 : month + 1;
   const nextMonthYear = month === 11 ? year + 1 : year;
+
+  return createDaysArray(nextMonthYear, nextMonth, remainingDays, false);
+};
+
+export const getCalendarDays = (year: number, month: number, startWeekOnSunday = true): CalendarDay[] => {
+  const daysInMonth = getDaysInMonth(year, month);
+  const firstDayOfWeek = getFirstDayOfMonth(year, month, startWeekOnSunday);
+
+  const prevMonthDaysArray = getPreviousMonthDays(year, month, firstDayOfWeek);
+  const currentMonthDaysArray = createDaysArray(year, month, daysInMonth, true);
+
+  const lastDayOfWeek = (firstDayOfWeek + daysInMonth) % 7;
   const remainingDays = lastDayOfWeek === 0 ? 0 : 7 - lastDayOfWeek;
 
-  const nextMonthDaysArray: CalendarDay[] = Array.from({ length: remainingDays }, (_, i) => ({
-    day: i + 1,
-    month: nextMonth,
-    year: nextMonthYear,
-    isCurrentMonth: false,
-  }));
+  const nextMonthDaysArray = getNextMonthDays(year, month, remainingDays);
 
   return [...prevMonthDaysArray, ...currentMonthDaysArray, ...nextMonthDaysArray];
 };
@@ -76,7 +86,7 @@ export const isWeekend = (dayIndex: number, startWeekOnSunday: boolean): boolean
   return dayIndex === 5 || dayIndex === 6;
 };
 
-export const isHoliday = (date: Date, holidays: Holiday[]): boolean => {
+export const isHoliday = (date: Date, holidays: Holiday[] = []): boolean => {
   return holidays.some(({ date: holidayDate, isRecurring }) => {
     if (isRecurring) {
       return holidayDate.getDate() === date.getDate() && holidayDate.getMonth() === date.getMonth();
@@ -95,4 +105,40 @@ export const isSameDate = (date1: Date, date2: Date): boolean => {
     date1.getMonth() === date2.getMonth() &&
     date1.getFullYear() === date2.getFullYear()
   );
+};
+
+export const isDateWithinRange = (date: Date, minDate?: Date, maxDate?: Date): boolean => {
+  if (minDate && date < minDate) {
+    return false;
+  }
+
+  if (maxDate && date > maxDate) {
+    return false;
+  }
+
+  return true;
+};
+
+export const enhanceCalendarDays = (
+  days: CalendarDay[],
+  startWeekOnSunday: boolean = true,
+  minDate?: Date,
+  maxDate?: Date,
+  holidays?: Holiday[]
+): CalendarDay[] => {
+  return days.map((day, index) => {
+    const currentDate = new Date(day.year, day.month, day.day);
+    const isDisabled = !isDateWithinRange(currentDate, minDate, maxDate);
+    const isDayHoliday = isHoliday(currentDate, holidays);
+    const isDayWeekend = isWeekend(index % 7, startWeekOnSunday);
+    const isDayToday = isToday(day.year, day.month, day.day);
+
+    return {
+      ...day,
+      isDisabled,
+      isHoliday: isDayHoliday,
+      isWeekend: isDayWeekend,
+      isToday: isDayToday,
+    };
+  });
 };
