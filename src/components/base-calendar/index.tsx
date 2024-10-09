@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { Calendar } from "@components/calendar";
 import { withCalendarLogic } from "@components/hoc/withCalendarLogic";
 import { Holiday } from "@customTypes/holidays";
 
 type BaseCalendarProps = {
+  minDate?: Date;
+  maxDate?: Date;
   startWeekOnSunday?: boolean;
   highlightWeekends?: boolean;
   highlightHolidays?: boolean;
@@ -12,8 +15,11 @@ type BaseCalendarProps = {
 const CalendarWithLogic = withCalendarLogic(Calendar);
 
 export const BaseCalendar: React.FC<BaseCalendarProps> = () => {
+  const [value, setValue] = useState<Date>(new Date());
   return (
     <CalendarWithLogic
+      value={value}
+      onSelect={setValue}
       startWeekOnSunday={false}
       highlightHolidays={true}
       highlightWeekends={true}

@@ -54,6 +54,7 @@ export const Calendar: React.FC<CalendarProps> = ({
     if (view === "days") {
       const newMonth = currentMonth === 0 ? 11 : currentMonth - 1;
       const newYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+
       onMonthChange?.(newMonth, newYear);
     } else if (view === "months") {
       onMonthChange?.(currentMonth, currentYear - 1);

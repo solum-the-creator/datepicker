@@ -1,11 +1,11 @@
-import { ComponentType, useState } from "react";
+import { ComponentType, useEffect, useState } from "react";
 import { isDateWithinRange } from "@utils/dateHelpers";
 
 export type CalendarLogicProps = {
   value?: Date;
+  onSelect?: (value: Date) => void;
   minDate?: Date;
   maxDate?: Date;
-  onSelect?: (value: Date) => void;
 };
 
 type WithCalendarLogicProps = {
@@ -24,11 +24,14 @@ export function withCalendarLogic<P extends WithCalendarLogicProps>(WrappedCompo
 
     const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth());
     const [currentYear, setCurrentYear] = useState(currentDate.getFullYear());
-    const [selectedDate, setSelectedDate] = useState<Date | undefined>(value);
+
+    useEffect(() => {
+      setCurrentMonth(currentDate.getMonth());
+      setCurrentYear(currentDate.getFullYear());
+    }, [value]);
 
     const handleDateSelect = (date: Date) => {
       if (isDateWithinRange(date, minDate, maxDate)) {
-        setSelectedDate(date);
         onSelect?.(date);
       }
     };
@@ -40,8 +43,8 @@ export function withCalendarLogic<P extends WithCalendarLogicProps>(WrappedCompo
 
     return (
       <WrappedComponent
-        {...(rest as P)}
-        selectedDate={selectedDate}
+        {...(rest as unknown as P)}
+        selectedDate={value}
         currentMonth={currentMonth}
         currentYear={currentYear}
         minDate={minDate}
