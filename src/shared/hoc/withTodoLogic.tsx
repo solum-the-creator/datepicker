@@ -6,12 +6,12 @@ import { Todo, TodoStorage } from "@/shared/types/todo";
 
 type WithTodoLogicProps = {
   value?: Date;
-  onSelect?: (value?: Date) => void;
+  onDateSelect?: (value?: Date) => void;
 };
 
 export function withTodoLogic<P extends WithTodoLogicProps>(WrappedComponent: React.ComponentType<P>) {
   return (props: Omit<P, keyof WithTodoLogicProps> & WithTodoLogicProps) => {
-    const { value, onSelect, ...rest } = props;
+    const { value, onDateSelect, ...rest } = props;
 
     const [todos, setTodos] = useState<Todo[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -55,7 +55,7 @@ export function withTodoLogic<P extends WithTodoLogicProps>(WrappedComponent: Re
 
     return (
       <>
-        <WrappedComponent {...(rest as unknown as P)} value={value} onSelect={onSelect} />
+        <WrappedComponent {...(rest as unknown as P)} value={value} onDateSelect={onDateSelect} />
 
         <CalendarButton onClick={() => setIsModalOpen(true)}>
           {todosForSelectedDate.length > 0 ? "View tasks" : "Add tasks"}

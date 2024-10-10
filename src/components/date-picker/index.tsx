@@ -2,10 +2,8 @@ import { useState } from "react";
 import { Calendar } from "@components/calendar";
 
 import { withPickerLogic } from "@/shared/hoc/with-picker-logic/withPickerLogic";
-import { withCalendarLogic } from "@/shared/hoc/withCalendarLogic";
 
-const CalendarWithLogic = withCalendarLogic(Calendar);
-export const CalendarWithPickerLogic = withPickerLogic(CalendarWithLogic);
+export const CalendarWithPickerLogic = withPickerLogic(Calendar);
 
 type BaseCalendarProps = {
   value?: Date;
@@ -23,7 +21,7 @@ export const BaseCalendarWithPicker: React.FC<BaseCalendarProps> = () => {
   return (
     <CalendarWithPickerLogic
       value={value}
-      onSelect={setValue}
+      onDateSelect={setValue}
       startWeekOnSunday={false}
       highlightHolidays={true}
       highlightWeekends={true}

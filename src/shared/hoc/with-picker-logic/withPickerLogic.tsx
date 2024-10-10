@@ -8,14 +8,14 @@ import { CalendarContainer, PickerContainer } from "./with-picker-logic.styled";
 
 type WithPickerLogicProps = {
   value?: Date;
-  onSelect?: (date?: Date) => void;
+  onDateSelect?: (date?: Date) => void;
   minDate?: Date;
   maxDate?: Date;
 };
 
 export function withPickerLogic<P extends WithPickerLogicProps>(WrappedComponent: React.ComponentType<P>) {
   return (props: Omit<P, keyof WithPickerLogicProps> & WithPickerLogicProps) => {
-    const { value, onSelect, minDate, maxDate, ...rest } = props;
+    const { value, onDateSelect, minDate, maxDate, ...rest } = props;
 
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [inputValue, setInputValue] = useState(value ? formatDate(value) : "");
@@ -39,7 +39,7 @@ export function withPickerLogic<P extends WithPickerLogicProps>(WrappedComponent
     const handleDateSelect = (date: Date) => {
       setInputValue(formatDate(date));
       setIsCalendarOpen(false);
-      onSelect?.(date);
+      onDateSelect?.(date);
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,7 +53,7 @@ export function withPickerLogic<P extends WithPickerLogicProps>(WrappedComponent
             setIsError(true);
           } else {
             setIsError(false);
-            onSelect?.(parsedDate);
+            onDateSelect?.(parsedDate);
           }
         } else {
           setIsError(true);
@@ -71,7 +71,7 @@ export function withPickerLogic<P extends WithPickerLogicProps>(WrappedComponent
       setIsCalendarOpen(false);
       setIsError(false);
       setInputValue("");
-      onSelect?.(undefined);
+      onDateSelect?.(undefined);
     };
 
     return (
@@ -89,7 +89,7 @@ export function withPickerLogic<P extends WithPickerLogicProps>(WrappedComponent
             <WrappedComponent
               {...(rest as P)}
               value={value}
-              onSelect={handleDateSelect}
+              onDateSelect={handleDateSelect}
               minDate={minDate}
               maxDate={maxDate}
             />
