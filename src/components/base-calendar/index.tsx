@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Calendar } from "@components/calendar";
-import { withCalendarLogic } from "@components/hoc/withCalendarLogic";
-import { Holiday } from "@customTypes/holidays";
+
+import { withCalendarLogic } from "@/shared/hoc/withCalendarLogic";
+import { Holiday } from "@/shared/types/holidays";
 
 type BaseCalendarProps = {
   minDate?: Date;

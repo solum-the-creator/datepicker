@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Calendar } from "@components/calendar";
-import { withPickerLogic } from "@components/hoc/with-picker-logic/withPickerLogic";
-import { withCalendarLogic } from "@components/hoc/withCalendarLogic";
+
+import { withPickerLogic } from "@/shared/hoc/with-picker-logic/withPickerLogic";
+import { withCalendarLogic } from "@/shared/hoc/withCalendarLogic";
 
 const CalendarWithLogic = withCalendarLogic(Calendar);
 export const CalendarWithPickerLogic = withPickerLogic(CalendarWithLogic);

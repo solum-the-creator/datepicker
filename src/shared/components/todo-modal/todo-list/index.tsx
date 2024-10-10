@@ -1,4 +1,4 @@
-import { Todo } from "@customTypes/todo";
+import { Todo } from "@/shared/types/todo";
 
 import { TodoItem } from "./todo-item";
 import { TodoListStyled } from "./todo-list.styled";

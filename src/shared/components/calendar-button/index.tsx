@@ -1,4 +1,4 @@
-import { ThemeWrapper } from "@components/theme-wrapper";
+import { ThemeWrapper } from "@/shared/components/theme-wrapper";
 
 import { CalendarButtonStyled } from "./calendar-button.styled";
 

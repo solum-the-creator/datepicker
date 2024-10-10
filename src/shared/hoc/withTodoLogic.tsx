@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { CalendarButton } from "@components/calendar-button";
-import { TodoModal } from "@components/todo-modal";
-import { Todo, TodoStorage } from "@customTypes/todo";
+
+import { CalendarButton } from "@/shared/components/calendar-button";
+import { TodoModal } from "@/shared/components/todo-modal";
+import { Todo, TodoStorage } from "@/shared/types/todo";
 
 type WithTodoLogicProps = {
   value?: Date;

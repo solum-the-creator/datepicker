@@ -1,4 +1,4 @@
-import { shortMonths } from "@/constants/months";
+import { shortMonths } from "@/shared/constants/months";
 
 import { CalendarCell } from "../calendar-views.styled";
 

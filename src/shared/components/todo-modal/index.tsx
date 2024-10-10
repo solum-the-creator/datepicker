@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-import { ThemeWrapper } from "@components/theme-wrapper";
-import { Todo } from "@customTypes/todo";
+
+import { ThemeWrapper } from "@/shared/components/theme-wrapper";
+import { Todo } from "@/shared/types/todo";
 
 import { TodoList } from "./todo-list";
 import {

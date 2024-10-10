@@ -1,5 +1,6 @@
 import { ComponentType, useEffect, useState } from "react";
-import { isDateWithinRange } from "@utils/dateHelpers";
+
+import { isDateWithinRange } from "@/shared/utils/dateHelpers";
 
 export type CalendarLogicProps = {
   value?: Date;

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { DateInput } from "@components/date-input";
-import { isDateWithinRange } from "@utils/dateHelpers";
-import { formatDate, parseDate } from "@utils/formatDatesHelpers";
+
+import { DateInput } from "@/shared/components/date-input";
+import { isDateWithinRange } from "@/shared/utils/dateHelpers";
+import { formatDate, parseDate } from "@/shared/utils/formatDatesHelpers";
 
 import { CalendarContainer, PickerContainer } from "./with-picker-logic.styled";
 

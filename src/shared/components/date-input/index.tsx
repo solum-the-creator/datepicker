@@ -1,7 +1,7 @@
-import { CalendarIcon } from "@components/icons/calendar-icon";
-import { CloseIcon } from "@components/icons/close-icon";
-import { ThemeWrapper } from "@components/theme-wrapper";
-import { formatDateInputValue } from "@utils/formatDatesHelpers";
+import { CalendarIcon } from "@/shared/components/icons/calendar-icon";
+import { CloseIcon } from "@/shared/components/icons/close-icon";
+import { ThemeWrapper } from "@/shared/components/theme-wrapper";
+import { formatDateInputValue } from "@/shared/utils/formatDatesHelpers";
 
 import { ClearButton, IconContainer, Input, InputContainer } from "./date-input.styled";
 

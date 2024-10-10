@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { CalendarHeader } from "@components/calendar-header";
-import { CalendarDaysView } from "@components/calendar-views/calendar-days-view";
-import { CalendarMonthsView } from "@components/calendar-views/calendar-months-view";
-import { CalendarYearsView } from "@components/calendar-views/calendar-years-view";
-import { Holiday } from "@customTypes/holidays";
-import GlobalStyles from "@styles/global";
-import { theme } from "@styles/theme";
-import { getMonthName } from "@utils/dateHelpers";
 import { ThemeProvider } from "styled-components";
+
+import { CalendarHeader } from "@/shared/components/calendar-header";
+import { CalendarDaysView } from "@/shared/components/calendar-views/calendar-days-view";
+import { CalendarMonthsView } from "@/shared/components/calendar-views/calendar-months-view";
+import { CalendarYearsView } from "@/shared/components/calendar-views/calendar-years-view";
+import GlobalStyles from "@/shared/styles/global";
+import { theme } from "@/shared/styles/theme";
+import { Holiday } from "@/shared/types/holidays";
+import { getMonthName } from "@/shared/utils/dateHelpers";
 
 import { CalendarContainer } from "./calendar.styled";
 

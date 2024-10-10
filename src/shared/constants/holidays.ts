@@ -1,4 +1,4 @@
-import { Holiday } from "@customTypes/holidays";
+import { Holiday } from "@/shared/types/holidays";
 
 export const defaultHolidays: Holiday[] = [
   { date: new Date(2024, 0, 1), isRecurring: true },

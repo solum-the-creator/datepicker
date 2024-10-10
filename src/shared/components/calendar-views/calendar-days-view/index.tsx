@@ -1,8 +1,13 @@
 import { useMemo } from "react";
-import { Holiday } from "@customTypes/holidays";
-import { enhanceCalendarDays, getCalendarDays, getWeekDaysNames, isSameDate } from "@utils/dateHelpers";
 
-import { defaultHolidays } from "@/constants/holidays";
+import { defaultHolidays } from "@/shared/constants/holidays";
+import { Holiday } from "@/shared/types/holidays";
+import {
+  enhanceCalendarDays,
+  getCalendarDays,
+  getWeekDaysNames,
+  isSameDate,
+} from "@/shared/utils/dateHelpers";
 
 import {
   CalendarBodyContainer,

@@ -1,6 +1,7 @@
-import GlobalStyles from "@styles/global";
-import { theme } from "@styles/theme";
 import { ThemeProvider } from "styled-components";
+
+import GlobalStyles from "@/shared/styles/global";
+import { theme } from "@/shared/styles/theme";
 
 type ThemeWrapperProps = {
   children: React.ReactNode;

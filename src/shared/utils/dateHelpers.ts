@@ -1,5 +1,5 @@
-import { CalendarDay } from "@customTypes/days";
-import { Holiday } from "@customTypes/holidays";
+import { CalendarDay } from "@/shared/types/days";
+import { Holiday } from "@/shared/types/holidays";
 
 export const getDaysInMonth = (year: number, month: number) => {
   return new Date(year, month + 1, 0).getDate();
