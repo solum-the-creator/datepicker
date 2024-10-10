@@ -1,16 +1,7 @@
 import { useEffect, useState } from "react";
-
-type Todo = {
-  id: string;
-  text: string;
-  date: Date;
-};
-
-type TodoStorage = {
-  id: string;
-  text: string;
-  date: string;
-};
+import { CalendarButton } from "@components/calendar-button";
+import { TodoModal } from "@components/todo-modal";
+import { Todo, TodoStorage } from "@customTypes/todo";
 
 type WithTodoLogicProps = {
   value?: Date;
@@ -22,67 +13,61 @@ export function withTodoLogic<P extends WithTodoLogicProps>(WrappedComponent: Re
     const { value, onSelect, ...rest } = props;
 
     const [todos, setTodos] = useState<Todo[]>([]);
-    const [inputValue, setInputValue] = useState("");
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
       const storedTodos = localStorage.getItem("todos");
       if (storedTodos) {
         const parsedTodos: TodoStorage[] = JSON.parse(storedTodos) as TodoStorage[];
-
-        const parsedTodosWithDate = parsedTodos.map((todo) => ({
+        const todosWithDate = parsedTodos.map((todo) => ({
           ...todo,
           date: new Date(todo.date),
         }));
-        setTodos(parsedTodosWithDate);
+        setTodos(todosWithDate);
       }
     }, []);
 
     useEffect(() => {
-      localStorage.setItem("todos", JSON.stringify(todos));
+      const todosToStore: TodoStorage[] = todos.map((todo) => ({
+        ...todo,
+        date: todo.date.toISOString(),
+      }));
+      localStorage.setItem("todos", JSON.stringify(todosToStore));
     }, [todos]);
 
-    const handleTodoAdd = (text: string, date: Date) => {
+    const handleTodoAdd = (text: string, date?: Date) => {
+      if (!date) return;
+
       const newTodo: Todo = {
         id: String(new Date().getTime()),
         text,
         date,
       };
       setTodos([...todos, newTodo]);
-      setInputValue("");
     };
 
     const handleTodoRemove = (taskId: string) => {
       setTodos(todos.filter((todo) => todo.id !== taskId));
     };
 
+    const todosForSelectedDate = todos.filter((todo) => todo.date.toDateString() === value?.toDateString());
+
     return (
       <>
         <WrappedComponent {...(rest as unknown as P)} value={value} onSelect={onSelect} />
 
-        <div>
-          <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Add a task"
-          />
-          <button type="button" onClick={() => handleTodoAdd(inputValue, value!)}>
-            Add Task
-          </button>
+        <CalendarButton onClick={() => setIsModalOpen(true)}>
+          {todosForSelectedDate.length > 0 ? "View tasks" : "Add tasks"}
+        </CalendarButton>
 
-          <ul>
-            {todos
-              .filter((todo) => todo.date.toDateString() === value?.toDateString())
-              .map((todo) => (
-                <li key={todo.id}>
-                  {todo.text}
-                  <button type="button" onClick={() => handleTodoRemove(todo.id)}>
-                    Remove
-                  </button>
-                </li>
-              ))}
-          </ul>
-        </div>
+        <TodoModal
+          isOpen={isModalOpen}
+          date={value}
+          todos={todosForSelectedDate}
+          onClose={() => setIsModalOpen(false)}
+          onTodoAdd={handleTodoAdd}
+          onTodoRemove={handleTodoRemove}
+        />
       </>
     );
   };
