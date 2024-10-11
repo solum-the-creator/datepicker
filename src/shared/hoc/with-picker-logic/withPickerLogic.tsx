@@ -83,7 +83,7 @@ export function withPickerLogic<P extends WithPickerLogicProps>(WrappedComponent
         isError={isError}
         pickerRef={pickerRef}
         WrappedComponent={WrappedComponent}
-        componentProps={{ ...rest, selectedDate: value, onDateSelect: handleDateSelect, minDate, maxDate }}
+        componentProps={{ ...rest, value, onDateSelect: handleDateSelect, minDate, maxDate }}
       />
     );
   };

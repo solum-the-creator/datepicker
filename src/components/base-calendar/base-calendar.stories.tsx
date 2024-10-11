@@ -1,4 +1,4 @@
-import { Meta, StoryFn } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 
 import { BaseCalendar } from ".";
 
@@ -7,11 +7,28 @@ export default {
   component: BaseCalendar,
 } as Meta;
 
-const Template: StoryFn<typeof BaseCalendar> = (args) => <BaseCalendar {...args} />;
+type Story = StoryObj<typeof BaseCalendar>;
 
-export const BaseCalendarDefault = Template.bind({});
-BaseCalendarDefault.args = {
-  startWeekOnSunday: true,
-  highlightWeekends: true,
-  highlightHolidays: false,
+export const Base: Story = {
+  args: {
+    startWeekOnSunday: false,
+    highlightWeekends: true,
+    highlightHolidays: false,
+    holidays: undefined,
+    minDate: undefined,
+    maxDate: undefined,
+  },
+};
+
+export const WithMondayFirst: Story = {
+  args: {
+    startWeekOnSunday: false,
+  },
+};
+
+export const WithHighlightHolidays: Story = {
+  args: {
+    highlightHolidays: true,
+    highlightWeekends: true,
+  },
 };

@@ -52,12 +52,13 @@ export const DayCell = styled.button<{
         return theme.colors.disabledText;
       case $isSelected || $isRangeStart || $isRangeEnd:
         return theme.colors.activeText;
+      case $isInRange:
+        return theme.colors.active;
       case $isCurrentMonth && $isWeekend:
         return theme.colors.red;
       case $isCurrentMonth && $isHoliday:
         return theme.colors.red;
-      case $isInRange:
-        return theme.colors.active;
+
       case !$isCurrentMonth:
         return theme.colors.disabledText;
       default:

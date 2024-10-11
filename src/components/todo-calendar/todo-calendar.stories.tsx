@@ -1,4 +1,4 @@
-import { Meta, StoryFn } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 
 import { TodoCalendar } from ".";
 
@@ -7,11 +7,15 @@ export default {
   component: TodoCalendar,
 } as Meta;
 
-const Template: StoryFn<typeof TodoCalendar> = (args) => <TodoCalendar {...args} />;
+type Story = StoryObj<typeof TodoCalendar>;
 
-export const BaseCalendarDefault = Template.bind({});
-BaseCalendarDefault.args = {
-  startWeekOnSunday: true,
-  highlightWeekends: true,
-  highlightHolidays: false,
+export const Default: Story = {
+  args: {
+    startWeekOnSunday: false,
+    highlightWeekends: true,
+    highlightHolidays: false,
+    holidays: undefined,
+    minDate: undefined,
+    maxDate: undefined,
+  },
 };

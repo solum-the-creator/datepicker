@@ -12,17 +12,7 @@ type BaseCalendarProps = {
   holidays?: Holiday[];
 };
 
-export const BaseCalendar: React.FC<BaseCalendarProps> = () => {
+export const BaseCalendar: React.FC<BaseCalendarProps> = ({ ...props }) => {
   const [value, setValue] = useState<Date | undefined>(new Date());
-  return (
-    <Calendar
-      value={value}
-      onDateSelect={setValue}
-      startWeekOnSunday={false}
-      highlightHolidays={true}
-      highlightWeekends={true}
-      minDate={new Date(2024, 9, 1)}
-      maxDate={new Date(2024, 9, 20)}
-    />
-  );
+  return <Calendar value={value} onDateSelect={setValue} {...props} />;
 };
