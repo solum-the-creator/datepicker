@@ -55,7 +55,7 @@ export function withTodoLogic<P extends WithTodoLogicProps>(WrappedComponent: Re
 
     return (
       <>
-        <WrappedComponent {...(rest as unknown as P)} value={value} onDateSelect={onDateSelect} />
+        <WrappedComponent {...(rest as P)} value={value} onDateSelect={onDateSelect} />
 
         <CalendarButton onClick={() => setIsModalOpen(true)}>
           {todosForSelectedDate.length > 0 ? "View tasks" : "Add tasks"}

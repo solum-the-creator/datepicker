@@ -44,6 +44,11 @@ export const TodoModal: React.FC<TodoModalProps> = ({
     };
   }, [modalContainer]);
 
+  const handleTodoAdd = (text: string, date?: Date) => {
+    onTodoAdd(text, date);
+    setInputValue("");
+  };
+
   if (!isOpen) {
     return null;
   }
@@ -61,7 +66,7 @@ export const TodoModal: React.FC<TodoModalProps> = ({
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
             />
-            <AddButton onClick={() => onTodoAdd(inputValue, date)} disabled={!inputValue}>
+            <AddButton onClick={() => handleTodoAdd(inputValue, date)} disabled={!inputValue}>
               Add task
             </AddButton>
           </TodoInputContainer>
