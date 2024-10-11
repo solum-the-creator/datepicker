@@ -32,3 +32,13 @@ export const WithHighlightHolidays: Story = {
     highlightWeekends: true,
   },
 };
+
+export const MinMaxDate: Story = {
+  args: {
+    startWeekOnSunday: false,
+    highlightHolidays: true,
+    highlightWeekends: true,
+    minDate: new Date(2024, 9, 10),
+    maxDate: new Date(2024, 10, 20),
+  },
+};
