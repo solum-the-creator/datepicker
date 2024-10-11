@@ -28,21 +28,36 @@ export const DayCell = styled.button<{
   $isHoliday?: boolean;
   $isDisabled?: boolean;
   $isSelected?: boolean;
+  $isInRange?: boolean;
+  $isRangeStart?: boolean;
+  $isRangeEnd?: boolean;
 }>`
   display: flex;
   justify-content: center;
   align-items: center;
 
-  color: ${({ theme, $isCurrentMonth, $isWeekend, $isHoliday, $isSelected, $isDisabled }) => {
+  color: ${({
+    theme,
+    $isCurrentMonth,
+    $isWeekend,
+    $isHoliday,
+    $isSelected,
+    $isDisabled,
+    $isInRange,
+    $isRangeStart,
+    $isRangeEnd,
+  }) => {
     switch (true) {
       case $isDisabled:
         return theme.colors.disabledText;
-      case $isSelected:
+      case $isSelected || $isRangeStart || $isRangeEnd:
         return theme.colors.activeText;
       case $isCurrentMonth && $isWeekend:
         return theme.colors.red;
       case $isCurrentMonth && $isHoliday:
         return theme.colors.red;
+      case $isInRange:
+        return theme.colors.active;
       case !$isCurrentMonth:
         return theme.colors.disabledText;
       default:
@@ -50,10 +65,16 @@ export const DayCell = styled.button<{
     }
   }};
 
-  background-color: ${({ theme, $isToday, $isSelected }) => {
+  background-color: ${({ theme, $isToday, $isSelected, $isInRange, $isRangeStart, $isRangeEnd }) => {
     switch (true) {
-      case $isSelected:
+      case $isSelected || $isRangeEnd:
         return theme.colors.active;
+      case $isRangeStart:
+        return theme.colors.activeBright;
+      case $isRangeEnd:
+        return theme.colors.activeBright;
+      case $isInRange:
+        return theme.colors.range;
       case $isToday:
         return theme.colors.hoverBackground;
       default:
@@ -61,7 +82,18 @@ export const DayCell = styled.button<{
     }
   }};
   border: none;
-  border-radius: 8px;
+  border-radius: ${({ theme, $isRangeStart, $isRangeEnd, $isInRange }) => {
+    switch (true) {
+      case $isRangeStart:
+        return theme.bordersRadius.rangeStart;
+      case $isRangeEnd:
+        return theme.bordersRadius.rangeEnd;
+      case $isInRange:
+        return theme.bordersRadius.range;
+      default:
+        return "0.5rem";
+    }
+  }};
 
   font-size: 13px;
   font-weight: 600;
@@ -70,7 +102,8 @@ export const DayCell = styled.button<{
   transition: background-color 0.2s ease-in-out;
 
   &:hover {
-    background-color: ${({ theme, $isSelected }) => !$isSelected && theme.colors.hoverBackground};
+    background-color: ${({ theme, $isSelected, $isRangeStart, $isRangeEnd }) =>
+      !$isSelected && !$isRangeStart && !$isRangeEnd && theme.colors.hoverBackground};
   }
 
   &:disabled {

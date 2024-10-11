@@ -7,13 +7,21 @@ import { ClearButton, IconContainer, Input, InputContainer } from "./date-input.
 
 type DateInputProps = {
   value: string;
+  placeholder?: string;
   isError?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onFocus?: () => void;
   onClear?: () => void;
 };
 
-export const DateInput: React.FC<DateInputProps> = ({ value, isError, onChange, onFocus, onClear }) => {
+export const DateInput: React.FC<DateInputProps> = ({
+  value,
+  placeholder,
+  isError,
+  onChange,
+  onFocus,
+  onClear,
+}) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formattedValue = formatDateInputValue(e.target.value);
 
@@ -28,7 +36,7 @@ export const DateInput: React.FC<DateInputProps> = ({ value, isError, onChange, 
         </IconContainer>
         <Input
           type="text"
-          placeholder="Choose date"
+          placeholder={placeholder}
           autoComplete="off"
           onChange={handleInputChange}
           onFocus={onFocus}

@@ -78,6 +78,7 @@ export function withPickerLogic<P extends WithPickerLogicProps>(WrappedComponent
       <PickerContainer ref={pickerRef}>
         <DateInput
           value={inputValue}
+          placeholder="Select date"
           onChange={handleInputChange}
           onFocus={handleFocus}
           onClear={handleClearClick}

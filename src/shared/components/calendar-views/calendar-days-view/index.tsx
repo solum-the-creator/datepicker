@@ -6,6 +6,7 @@ import {
   enhanceCalendarDays,
   getCalendarDays,
   getWeekDaysNames,
+  isDateWithinRange,
   isSameDate,
 } from "@/shared/utils/dateHelpers";
 
@@ -21,6 +22,8 @@ type CalendarDaysViewProps = {
   month: number;
   year: number;
   selectedDate?: Date;
+  rangeStart?: Date;
+  rangeEnd?: Date;
   startWeekOnSunday?: boolean;
   highlightWeekends?: boolean;
   highlightHolidays?: boolean;
@@ -34,6 +37,8 @@ export const CalendarDaysView: React.FC<CalendarDaysViewProps> = ({
   month,
   year,
   selectedDate,
+  rangeStart,
+  rangeEnd,
   onDateSelect,
   minDate,
   maxDate,
@@ -81,22 +86,34 @@ export const CalendarDaysView: React.FC<CalendarDaysViewProps> = ({
             isDisabled,
             isHoliday,
             isWeekend,
-          }) => (
-            <DayCell
-              key={`${currentYear}-${currentMonth}-${day}`}
-              type="button"
-              role="gridcell"
-              disabled={isDisabled}
-              onClick={() => handleDateClick(day, currentMonth, currentYear)}
-              $isCurrentMonth={isCurrentMonth}
-              $isToday={isToday}
-              $isWeekend={highlightWeekends && isWeekend}
-              $isHoliday={highlightHolidays && isHoliday}
-              $isSelected={selectedDate && isSameDate(selectedDate, new Date(currentYear, currentMonth, day))}
-              $isDisabled={isDisabled}>
-              {day}
-            </DayCell>
-          )
+          }) => {
+            const currentDate = new Date(currentYear, currentMonth, day);
+            const isSelected = selectedDate && isSameDate(selectedDate, currentDate);
+
+            const isRangeStart = rangeStart && isSameDate(rangeStart, currentDate);
+            const isRangeEnd = rangeEnd && isSameDate(rangeEnd, currentDate);
+            const isInRange = rangeStart && rangeEnd && isDateWithinRange(currentDate, rangeStart, rangeEnd);
+
+            return (
+              <DayCell
+                key={`${currentYear}-${currentMonth}-${day}`}
+                type="button"
+                role="gridcell"
+                disabled={isDisabled}
+                onClick={() => handleDateClick(day, currentMonth, currentYear)}
+                $isCurrentMonth={isCurrentMonth}
+                $isToday={isToday}
+                $isWeekend={highlightWeekends && isWeekend}
+                $isHoliday={highlightHolidays && isHoliday}
+                $isSelected={isSelected}
+                $isInRange={isInRange}
+                $isRangeStart={isRangeStart}
+                $isRangeEnd={isRangeEnd}
+                $isDisabled={isDisabled}>
+                {day}
+              </DayCell>
+            );
+          }
         )}
       </DatesGrid>
     </CalendarBodyContainer>

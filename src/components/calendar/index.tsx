@@ -17,22 +17,31 @@ export type View = "days" | "months" | "years";
 
 type CalendarProps = {
   value?: Date;
+  rangeStart?: Date;
+  rangeEnd?: Date;
   minDate?: Date;
   maxDate?: Date;
+  isRange?: boolean;
 
   holidays?: Holiday[];
   startWeekOnSunday?: boolean;
   highlightWeekends?: boolean;
   highlightHolidays?: boolean;
   onDateSelect?: (date?: Date) => void;
+  onRangeSelect?: (start?: Date, end?: Date) => void;
 };
 
 export const Calendar: React.FC<CalendarProps> = ({
   value,
+  rangeStart,
+  rangeEnd,
+
   minDate,
   maxDate,
   holidays,
   onDateSelect,
+  onRangeSelect,
+  isRange = false,
   highlightHolidays = false,
   highlightWeekends = false,
   startWeekOnSunday = true,
@@ -86,7 +95,19 @@ export const Calendar: React.FC<CalendarProps> = ({
 
   const handleDateSelect = (date: Date) => {
     if (isDateWithinRange(date, minDate, maxDate)) {
-      onDateSelect?.(date);
+      if (isRange) {
+        if (onRangeSelect && rangeStart && !rangeEnd) {
+          if (date > rangeStart) {
+            onRangeSelect(rangeStart, date);
+          } else {
+            onRangeSelect(date, rangeStart);
+          }
+        } else if (onRangeSelect) {
+          onRangeSelect(date, undefined);
+        }
+      } else {
+        onDateSelect?.(date);
+      }
     }
   };
 
@@ -115,7 +136,9 @@ export const Calendar: React.FC<CalendarProps> = ({
             highlightWeekends={highlightWeekends}
             highlightHolidays={highlightHolidays}
             holidays={holidays}
-            selectedDate={value}
+            selectedDate={isRange ? undefined : value}
+            rangeStart={isRange ? rangeStart : undefined}
+            rangeEnd={isRange ? rangeEnd : undefined}
             onDateSelect={handleDateSelect}
           />
         )}
