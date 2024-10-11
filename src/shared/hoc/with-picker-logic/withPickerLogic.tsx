@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 
-import { DateInput } from "@/shared/components/date-input";
+import { DatePickerWithCalendar } from "@/shared/components/date-picker-with-calendar";
 import { isDateWithinRange } from "@/shared/utils/dateHelpers";
 import { formatDate, parseDate } from "@/shared/utils/formatDatesHelpers";
-
-import { CalendarContainer, PickerContainer } from "./with-picker-logic.styled";
 
 type WithPickerLogicProps = {
   value?: Date;
@@ -75,28 +73,18 @@ export function withPickerLogic<P extends WithPickerLogicProps>(WrappedComponent
     };
 
     return (
-      <PickerContainer ref={pickerRef}>
-        <DateInput
-          value={inputValue}
-          placeholder="Select date"
-          onChange={handleInputChange}
-          onFocus={handleFocus}
-          onClear={handleClearClick}
-          isError={isError}
-        />
-
-        {isCalendarOpen && (
-          <CalendarContainer>
-            <WrappedComponent
-              {...(rest as P)}
-              value={value}
-              onDateSelect={handleDateSelect}
-              minDate={minDate}
-              maxDate={maxDate}
-            />
-          </CalendarContainer>
-        )}
-      </PickerContainer>
+      <DatePickerWithCalendar
+        value={inputValue}
+        placeholder="Select date"
+        isCalendarOpen={isCalendarOpen}
+        onFocus={handleFocus}
+        onChange={handleInputChange}
+        onClear={handleClearClick}
+        isError={isError}
+        pickerRef={pickerRef}
+        WrappedComponent={WrappedComponent}
+        componentProps={{ ...rest, selectedDate: value, onDateSelect: handleDateSelect, minDate, maxDate }}
+      />
     );
   };
 }

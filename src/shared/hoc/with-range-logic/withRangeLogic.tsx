@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { isDateWithinRange } from "@utils/dateHelpers";
 import { formatDate, parseDate } from "@utils/formatDatesHelpers";
 
-import { DateInput } from "../../components/date-input";
+import { DatePickerWithCalendar } from "@/shared/components/date-picker-with-calendar";
 
-import { CalendarContainer, PickerContainer, RangeContainer } from "./with-range-logic.styled";
+import { RangeContainer } from "./with-range-logic.styled";
 
 type WithRangeLogicProps = {
   rangeStart?: Date;
@@ -111,53 +111,47 @@ export function withRangeLogic<P extends WithRangeLogicProps>(WrappedComponent: 
 
     return (
       <RangeContainer>
-        <PickerContainer ref={startPickerRef}>
-          <DateInput
-            value={inputStartValue}
-            onChange={handleStartInputChange}
-            onFocus={handleStartFocus}
-            onClear={handleClearClick}
-            isError={isStartError}
-            placeholder="Start date"
-          />
-          {isStartCalendarOpen && (
-            <CalendarContainer>
-              <WrappedComponent
-                {...(rest as P)}
-                rangeStart={rangeStart}
-                rangeEnd={rangeEnd}
-                isRange={true}
-                minDate={minDate}
-                maxDate={maxDate}
-                onRangeSelect={handleRangeSelect}
-              />
-            </CalendarContainer>
-          )}
-        </PickerContainer>
+        <DatePickerWithCalendar
+          value={inputStartValue}
+          placeholder="Start date"
+          isCalendarOpen={isStartCalendarOpen}
+          onFocus={handleStartFocus}
+          onChange={handleStartInputChange}
+          onClear={handleClearClick}
+          isError={isStartError}
+          pickerRef={startPickerRef}
+          WrappedComponent={WrappedComponent}
+          componentProps={{
+            ...rest,
+            isRange: true,
+            rangeStart,
+            rangeEnd,
+            minDate,
+            maxDate,
+            onRangeSelect: handleRangeSelect,
+          }}
+        />
 
-        <PickerContainer ref={endPickerRef}>
-          <DateInput
-            value={inputEndValue}
-            onChange={handleEndInputChange}
-            onFocus={handleEndFocus}
-            onClear={handleClearClick}
-            isError={isEndError}
-            placeholder="End date"
-          />
-          {isEndCalendarOpen && (
-            <CalendarContainer>
-              <WrappedComponent
-                {...(rest as P)}
-                rangeStart={rangeStart}
-                rangeEnd={rangeEnd}
-                isRange={true}
-                minDate={minDate}
-                maxDate={maxDate}
-                onRangeSelect={handleRangeSelect}
-              />
-            </CalendarContainer>
-          )}
-        </PickerContainer>
+        <DatePickerWithCalendar
+          value={inputEndValue}
+          placeholder="End date"
+          isCalendarOpen={isEndCalendarOpen}
+          onFocus={handleEndFocus}
+          onChange={handleEndInputChange}
+          onClear={handleClearClick}
+          isError={isEndError}
+          pickerRef={endPickerRef}
+          WrappedComponent={WrappedComponent}
+          componentProps={{
+            ...rest,
+            isRange: true,
+            rangeStart,
+            rangeEnd,
+            minDate,
+            maxDate,
+            onRangeSelect: handleRangeSelect,
+          }}
+        />
       </RangeContainer>
     );
   };
