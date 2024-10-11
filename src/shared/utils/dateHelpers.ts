@@ -142,3 +142,22 @@ export const enhanceCalendarDays = (
     };
   });
 };
+
+export const calculateNewMonth = (currentMonth: number, step: number) => {
+  return (currentMonth + step + 12) % 12;
+};
+
+export const calculateNewYear = (
+  currentMonth: number,
+  step: number,
+  newMonth: number,
+  currentYear: number
+) => {
+  if (currentMonth + step < 0 && newMonth === 11) {
+    return currentYear - 1;
+  }
+  if (currentMonth + step > 11 && newMonth === 0) {
+    return currentYear + 1;
+  }
+  return currentYear;
+};

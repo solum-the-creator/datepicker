@@ -14,6 +14,7 @@ export const RangeCalendar: React.FC = () => {
       rangeStart={rangeStart}
       rangeEnd={rangeEnd}
       onRangeSelect={(start, end) => [setRangeStart(start), setRangeEnd(end)]}
+      minDate={new Date(2024, 8, 10)}
     />
   );
 };

@@ -9,7 +9,12 @@ import { useCalendarDate } from "@/shared/hooks/useCalendarDate";
 import GlobalStyles from "@/shared/styles/global";
 import { theme } from "@/shared/styles/theme";
 import { Holiday } from "@/shared/types/holidays";
-import { getMonthName, isDateWithinRange } from "@/shared/utils/dateHelpers";
+import {
+  calculateNewMonth,
+  calculateNewYear,
+  getMonthName,
+  isDateWithinRange,
+} from "@/shared/utils/dateHelpers";
 
 import { CalendarContainer } from "./calendar.styled";
 
@@ -48,7 +53,7 @@ export const Calendar: React.FC<CalendarProps> = ({
 }) => {
   const [view, setView] = useState<View>("days");
 
-  const { currentMonth, currentYear, handleMonthYearChange } = useCalendarDate(value);
+  const { currentMonth, currentYear, handleMonthYearChange } = useCalendarDate(value, rangeStart, rangeEnd);
 
   const handleMonthClick = () => {
     setView("months");
@@ -58,30 +63,21 @@ export const Calendar: React.FC<CalendarProps> = ({
     setView("years");
   };
 
-  const handlePrevClick = () => {
+  const changeMonthYear = (step: number) => {
     if (view === "days") {
-      const newMonth = currentMonth === 0 ? 11 : currentMonth - 1;
-      const newYear = currentMonth === 0 ? currentYear - 1 : currentYear;
-
+      const newMonth = calculateNewMonth(currentMonth, step);
+      const newYear = calculateNewYear(currentMonth, step, newMonth, currentYear);
       handleMonthYearChange(newMonth, newYear);
     } else if (view === "months") {
-      handleMonthYearChange(currentMonth, currentYear - 1);
+      handleMonthYearChange(currentMonth, currentYear + step);
     } else if (view === "years") {
-      handleMonthYearChange(currentMonth, currentYear - 12);
+      handleMonthYearChange(currentMonth, currentYear + step * 12);
     }
   };
 
-  const handleNextClick = () => {
-    if (view === "days") {
-      const newMonth = currentMonth === 11 ? 0 : currentMonth + 1;
-      const newYear = currentMonth === 11 ? currentYear + 1 : currentYear;
-      handleMonthYearChange(newMonth, newYear);
-    } else if (view === "months") {
-      handleMonthYearChange(currentMonth, currentYear + 1);
-    } else if (view === "years") {
-      handleMonthYearChange(currentMonth, currentYear + 12);
-    }
-  };
+  const handlePrevClick = () => changeMonthYear(-1);
+
+  const handleNextClick = () => changeMonthYear(1);
 
   const handleMonthSelect = (month: number) => {
     setView("days");
@@ -93,21 +89,30 @@ export const Calendar: React.FC<CalendarProps> = ({
     handleMonthYearChange(currentMonth, year);
   };
 
+  const handleSingleDateSelect = (date: Date) => {
+    if (onDateSelect) {
+      onDateSelect(date);
+    }
+  };
+
+  const handleRangeDateSelect = (date: Date) => {
+    if (!onRangeSelect) return;
+
+    if (rangeStart && !rangeEnd) {
+      const [start, end] = date > rangeStart ? [rangeStart, date] : [date, rangeStart];
+      onRangeSelect(start, end);
+    } else {
+      onRangeSelect(date, undefined);
+    }
+  };
+
   const handleDateSelect = (date: Date) => {
-    if (isDateWithinRange(date, minDate, maxDate)) {
-      if (isRange) {
-        if (onRangeSelect && rangeStart && !rangeEnd) {
-          if (date > rangeStart) {
-            onRangeSelect(rangeStart, date);
-          } else {
-            onRangeSelect(date, rangeStart);
-          }
-        } else if (onRangeSelect) {
-          onRangeSelect(date, undefined);
-        }
-      } else {
-        onDateSelect?.(date);
-      }
+    if (!isDateWithinRange(date, minDate, maxDate)) return;
+
+    if (isRange) {
+      handleRangeDateSelect(date);
+    } else {
+      handleSingleDateSelect(date);
     }
   };
 
