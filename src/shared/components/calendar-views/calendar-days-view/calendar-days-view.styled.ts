@@ -31,7 +31,9 @@ export const DayCell = styled.button<{
   $isInRange?: boolean;
   $isRangeStart?: boolean;
   $isRangeEnd?: boolean;
+  $hasTask?: boolean;
 }>`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -101,6 +103,20 @@ export const DayCell = styled.button<{
   cursor: pointer;
 
   transition: background-color 0.2s ease-in-out;
+
+  &::before {
+    content: "";
+    display: block;
+    width: 0.25rem;
+    height: 0.25rem;
+    border-radius: 0.5rem;
+    position: absolute;
+    background-color: ${({ theme }) => theme.colors.active};
+    bottom: 0.2rem;
+    left: calc(50% - 0.125rem);
+    z-index: 1;
+    opacity: ${({ $hasTask }) => ($hasTask ? "0.5" : "0")};
+  }
 
   &:hover {
     background-color: ${({ theme, $isSelected, $isRangeStart, $isRangeEnd }) =>

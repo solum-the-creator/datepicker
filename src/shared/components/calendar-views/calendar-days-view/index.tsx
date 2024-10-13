@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 
 import { defaultHolidays } from "@/shared/constants/holidays";
+import { useTodos } from "@/shared/context/todosContext";
 import { Holiday } from "@/shared/types/holidays";
 import {
   enhanceCalendarDays,
@@ -47,6 +48,7 @@ export const CalendarDaysView: React.FC<CalendarDaysViewProps> = ({
   highlightHolidays = false,
   holidays = defaultHolidays,
 }) => {
+  const { todos } = useTodos();
   const weekDays = useMemo(() => getWeekDaysNames(startWeekOnSunday), [startWeekOnSunday]);
 
   const days = useMemo(
@@ -65,6 +67,10 @@ export const CalendarDaysView: React.FC<CalendarDaysViewProps> = ({
     if (onDateSelect) {
       onDateSelect(newSelectedDate);
     }
+  };
+
+  const hasTodos = (date: Date) => {
+    return todos.some((todo) => isSameDate(todo.date, date));
   };
 
   return (
@@ -93,6 +99,7 @@ export const CalendarDaysView: React.FC<CalendarDaysViewProps> = ({
             const isRangeStart = rangeStart && isSameDate(rangeStart, currentDate);
             const isRangeEnd = rangeEnd && isSameDate(rangeEnd, currentDate);
             const isInRange = rangeStart && rangeEnd && isDateWithinRange(currentDate, rangeStart, rangeEnd);
+            const hasTask = hasTodos(currentDate);
 
             return (
               <DayCell
@@ -109,7 +116,8 @@ export const CalendarDaysView: React.FC<CalendarDaysViewProps> = ({
                 $isInRange={isInRange}
                 $isRangeStart={isRangeStart}
                 $isRangeEnd={isRangeEnd}
-                $isDisabled={isDisabled}>
+                $isDisabled={isDisabled}
+                $hasTask={hasTask}>
                 {day}
               </DayCell>
             );

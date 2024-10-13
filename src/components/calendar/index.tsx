@@ -22,7 +22,7 @@ type CalendarProps = {
   minDate?: Date;
   maxDate?: Date;
   isRange?: boolean;
-
+  withTodo?: boolean;
   holidays?: Holiday[];
   startWeekOnSunday?: boolean;
   highlightWeekends?: boolean;
@@ -35,12 +35,12 @@ export const Calendar: React.FC<CalendarProps> = ({
   value,
   rangeStart,
   rangeEnd,
-
   minDate,
   maxDate,
   holidays,
   onDateSelect,
   onRangeSelect,
+  withTodo = false,
   isRange = false,
   highlightHolidays = false,
   highlightWeekends = false,
@@ -126,7 +126,7 @@ export const Calendar: React.FC<CalendarProps> = ({
     <ThemeProvider theme={theme}>
       <GlobalStyles />
 
-      <CalendarContainer>
+      <CalendarContainer $withTodo={withTodo}>
         <CalendarHeader
           month={currentMonth}
           year={currentYear}
