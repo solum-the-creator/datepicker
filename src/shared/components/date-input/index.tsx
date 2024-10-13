@@ -24,8 +24,15 @@ export const DateInput: React.FC<DateInputProps> = ({
 }) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formattedValue = formatDateInputValue(e.target.value);
-
     onChange?.({ ...e, target: { ...e.target, value: formattedValue } });
+  };
+
+  const handleInputFocus = () => {
+    onFocus?.();
+  };
+
+  const handleClear = () => {
+    onClear?.();
   };
 
   return (
@@ -39,11 +46,11 @@ export const DateInput: React.FC<DateInputProps> = ({
           placeholder={placeholder}
           autoComplete="off"
           onChange={handleInputChange}
-          onFocus={onFocus}
+          onFocus={handleInputFocus}
           value={value}
         />
         {value && (
-          <ClearButton onClick={onClear}>
+          <ClearButton onClick={handleClear}>
             <CloseIcon />
           </ClearButton>
         )}
