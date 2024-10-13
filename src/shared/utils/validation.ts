@@ -53,11 +53,24 @@ export const isYearWithinRange = (year: number, minDate?: Date, maxDate?: Date):
   const parsedMinDate = toDate(minDate);
   const parsedMaxDate = toDate(maxDate);
 
-  if (!parsedMinDate || !parsedMaxDate) {
+  if (!parsedMinDate && !parsedMaxDate) {
     return true;
   }
 
   const isAfterMin = parsedMinDate ? year >= parsedMinDate.getFullYear() : true;
   const isBeforeMax = parsedMaxDate ? year <= parsedMaxDate.getFullYear() : true;
   return isAfterMin && isBeforeMax;
+};
+
+export const isMonthDisabled = (month: number, year: number, minDate?: Date, maxDate?: Date): boolean => {
+  const parsedMinDate = toDate(minDate);
+  const parsedMaxDate = toDate(maxDate);
+
+  if (parsedMinDate && year === parsedMinDate.getFullYear() && month < parsedMinDate.getMonth()) {
+    return true;
+  }
+  if (parsedMaxDate && year === parsedMaxDate.getFullYear() && month > parsedMaxDate.getMonth()) {
+    return true;
+  }
+  return false;
 };

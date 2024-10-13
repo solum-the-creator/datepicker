@@ -157,7 +157,13 @@ export const Calendar: React.FC<CalendarProps> = ({
         )}
 
         {view === "months" && (
-          <CalendarMonthsView currentMonth={currentMonth} onMonthSelect={handleMonthSelect} />
+          <CalendarMonthsView
+            currentMonth={currentMonth}
+            currentYear={currentYear}
+            onMonthSelect={handleMonthSelect}
+            minDate={minDate}
+            maxDate={maxDate}
+          />
         )}
 
         {view === "years" && (
