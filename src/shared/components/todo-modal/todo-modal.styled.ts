@@ -1,18 +1,5 @@
 import styled from "styled-components";
 
-export const TodoModalContainer = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  padding: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.4);
-`;
-
 export const TodoModalContent = styled.div`
   width: 100%;
   max-width: 30rem;

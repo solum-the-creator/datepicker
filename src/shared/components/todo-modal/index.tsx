@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
-import ReactDOM from "react-dom";
+import { useRef, useState } from "react";
 
 import { ThemeWrapper } from "@/shared/components/theme-wrapper";
+import { useClickOutside } from "@/shared/hooks/useClickOutside";
 import { Todo } from "@/shared/types/todo";
+
+import { ModalContainer } from "../modal-container";
 
 import { TodoList } from "./todo-list";
 import {
@@ -12,7 +14,6 @@ import {
   ModalTitle,
   TodoInput,
   TodoInputContainer,
-  TodoModalContainer,
   TodoModalContent,
 } from "./todo-modal.styled";
 
@@ -34,15 +35,8 @@ export const TodoModal: React.FC<TodoModalProps> = ({
   onTodoRemove,
 }) => {
   const [inputValue, setInputValue] = useState("");
-  const [modalContainer] = useState(() => document.createElement("div"));
-
-  useEffect(() => {
-    document.body.appendChild(modalContainer);
-
-    return () => {
-      document.body.removeChild(modalContainer);
-    };
-  }, [modalContainer]);
+  const ref = useRef<HTMLDivElement>(null);
+  useClickOutside(ref, onClose);
 
   const handleTodoAdd = (text: string, date?: Date) => {
     onTodoAdd(text, date);
@@ -53,10 +47,10 @@ export const TodoModal: React.FC<TodoModalProps> = ({
     return null;
   }
 
-  return ReactDOM.createPortal(
+  return (
     <ThemeWrapper>
-      <TodoModalContainer>
-        <TodoModalContent>
+      <ModalContainer>
+        <TodoModalContent ref={ref}>
           <ModalTitle>Tasks for {date?.toLocaleDateString()}</ModalTitle>
 
           <TodoInputContainer>
@@ -77,8 +71,7 @@ export const TodoModal: React.FC<TodoModalProps> = ({
             <CloseButton onClick={onClose}>Close</CloseButton>
           </CloseButtonContainer>
         </TodoModalContent>
-      </TodoModalContainer>
-    </ThemeWrapper>,
-    modalContainer
+      </ModalContainer>
+    </ThemeWrapper>
   );
 };
