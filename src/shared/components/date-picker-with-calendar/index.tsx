@@ -1,47 +1,90 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useRef, useState } from "react";
+import { isDateWithinRange } from "@utils/dateHelpers";
+import { formatDate, parseDate } from "@utils/formatDatesHelpers";
 
 import { DateInput } from "@/shared/components/date-input";
+import { useClickOutside } from "@/shared/hooks/useClickOutside";
 
 import { CalendarContainer, PickerContainer } from "./date-picker-with-calendar";
 
 type DatePickerWithCalendarProps = {
-  value: string;
+  value?: Date;
+  onDateSelect?: (date?: Date) => void;
   placeholder?: string;
-  isCalendarOpen: boolean;
-  onFocus: () => void;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onClear: () => void;
-  isError: boolean;
-  pickerRef: React.RefObject<HTMLDivElement>;
-  WrappedComponent: React.ComponentType<any>;
-  componentProps: any;
+  minDate?: Date;
+  maxDate?: Date;
+  children: (handleDateSelect: (date?: Date) => void) => React.ReactNode;
 };
 
 export const DatePickerWithCalendar: React.FC<DatePickerWithCalendarProps> = ({
   value,
-  isCalendarOpen,
-  onFocus,
-  onChange,
-  onClear,
-  isError,
-  pickerRef,
-  WrappedComponent,
-  componentProps,
+  children,
+  onDateSelect,
+  minDate,
+  maxDate,
   placeholder,
-}) => (
-  <PickerContainer ref={pickerRef}>
-    <DateInput
-      value={value}
-      placeholder={placeholder}
-      onChange={onChange}
-      onFocus={onFocus}
-      onClear={onClear}
-      isError={isError}
-    />
-    {isCalendarOpen && (
-      <CalendarContainer>
-        <WrappedComponent {...componentProps} />
-      </CalendarContainer>
-    )}
-  </PickerContainer>
-);
+}) => {
+  const ref = useRef<HTMLDivElement>(null);
+
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [inputValue, setInputValue] = useState(value ? formatDate(value) : "");
+  const [isError, setIsError] = useState(false);
+
+  const handleClickOutside = () => {
+    setIsCalendarOpen(false);
+  };
+
+  useClickOutside(ref, handleClickOutside);
+
+  const handleDateSelect = (date?: Date) => {
+    setInputValue(date ? formatDate(date) : "");
+    setIsCalendarOpen(false);
+    onDateSelect?.(date);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input = e.target.value;
+    setInputValue(input);
+
+    if (input.length >= 10) {
+      const parsedDate = parseDate(input);
+      if (parsedDate) {
+        if (!isDateWithinRange(parsedDate, minDate, maxDate)) {
+          setIsError(true);
+        } else {
+          setIsError(false);
+          onDateSelect?.(parsedDate);
+        }
+      } else {
+        setIsError(true);
+      }
+    } else {
+      setIsError(false);
+    }
+  };
+
+  const handleFocus = () => {
+    setIsCalendarOpen(true);
+  };
+
+  const handleClearClick = () => {
+    setIsCalendarOpen(false);
+    setIsError(false);
+    setInputValue("");
+    onDateSelect?.(undefined);
+  };
+
+  return (
+    <PickerContainer ref={ref}>
+      <DateInput
+        value={inputValue}
+        placeholder={placeholder}
+        onChange={handleInputChange}
+        onFocus={handleFocus}
+        onClear={handleClearClick}
+        isError={isError}
+      />
+      {isCalendarOpen && <CalendarContainer>{children(handleDateSelect)}</CalendarContainer>}
+    </PickerContainer>
+  );
+};
