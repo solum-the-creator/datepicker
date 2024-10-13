@@ -19,6 +19,11 @@ export const ArrowButton = styled.button`
   background-color: transparent;
   border: none;
   cursor: pointer;
+
+  &:disabled {
+    color: ${({ theme }) => theme.colors.border};
+    cursor: auto;
+  }
 `;
 
 export const TextButton = styled.button`

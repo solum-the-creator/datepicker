@@ -1,3 +1,5 @@
+import { View } from "@customTypes/calendar";
+
 export const formatDate = (date: Date): string => {
   const day = String(date.getDate()).padStart(2, "0");
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -32,4 +34,21 @@ export const formatDateInputValue = (value: string) => {
   }
 
   return `${numericValue.slice(0, 2)}.${numericValue.slice(2, 4)}.${numericValue.slice(4)}`;
+};
+
+export const getCalendarTitle = (view: View, year: number): string => {
+  if (view === "months") {
+    return `${year}`;
+  }
+  if (view === "years") {
+    const startYear = Math.floor(year / 12) * 12;
+    const endYear = startYear + 11;
+    return `${startYear} - ${endYear}`;
+  }
+  return "";
+};
+
+export const toDate = (date: string | Date | undefined): Date | undefined => {
+  if (!date) return undefined;
+  return date instanceof Date ? date : new Date(date);
 };

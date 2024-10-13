@@ -9,12 +9,7 @@ import { useCalendarDate } from "@/shared/hooks/useCalendarDate";
 import GlobalStyles from "@/shared/styles/global";
 import { theme } from "@/shared/styles/theme";
 import { Holiday } from "@/shared/types/holidays";
-import {
-  calculateNewMonth,
-  calculateNewYear,
-  getMonthName,
-  isDateWithinRange,
-} from "@/shared/utils/dateHelpers";
+import { calculateNewMonth, calculateNewYear, isDateWithinRange } from "@/shared/utils/dateHelpers";
 
 import { CalendarContainer } from "./calendar.styled";
 
@@ -133,9 +128,11 @@ export const Calendar: React.FC<CalendarProps> = ({
 
       <CalendarContainer>
         <CalendarHeader
-          month={getMonthName(currentMonth)}
+          month={currentMonth}
           year={currentYear}
           view={view}
+          minDate={minDate}
+          maxDate={maxDate}
           onPrevClick={handlePrevClick}
           onNextClick={handleNextClick}
           onMonthClick={handleMonthClick}
