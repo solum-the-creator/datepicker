@@ -160,7 +160,14 @@ export const Calendar: React.FC<CalendarProps> = ({
           <CalendarMonthsView currentMonth={currentMonth} onMonthSelect={handleMonthSelect} />
         )}
 
-        {view === "years" && <CalendarYearsView currentYear={currentYear} onYearSelect={handleYearSelect} />}
+        {view === "years" && (
+          <CalendarYearsView
+            currentYear={currentYear}
+            onYearSelect={handleYearSelect}
+            minDate={minDate}
+            maxDate={maxDate}
+          />
+        )}
       </CalendarContainer>
     </ThemeProvider>
   );

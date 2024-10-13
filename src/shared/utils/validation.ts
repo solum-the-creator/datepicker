@@ -48,3 +48,16 @@ export const canGoNext = (view: View, year: number, month: number, maxDate?: Dat
 
   return true;
 };
+
+export const isYearWithinRange = (year: number, minDate?: Date, maxDate?: Date): boolean => {
+  const parsedMinDate = toDate(minDate);
+  const parsedMaxDate = toDate(maxDate);
+
+  if (!parsedMinDate || !parsedMaxDate) {
+    return true;
+  }
+
+  const isAfterMin = parsedMinDate ? year >= parsedMinDate.getFullYear() : true;
+  const isBeforeMax = parsedMaxDate ? year <= parsedMaxDate.getFullYear() : true;
+  return isAfterMin && isBeforeMax;
+};
