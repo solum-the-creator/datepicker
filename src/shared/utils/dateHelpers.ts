@@ -2,7 +2,7 @@ import { CalendarDay } from "@/shared/types/days";
 import { Holiday } from "@/shared/types/holidays";
 
 export const getDaysInMonth = (year: number, month: number) => {
-  return new Date(year, month + 1, 0).getDate();
+  return new Date(year, month, 0).getDate();
 };
 
 export const getFirstDayOfMonth = (year: number, month: number, startWeekOnSunday = true) => {
@@ -48,7 +48,7 @@ const getNextMonthDays = (year: number, month: number, remainingDays: number): C
 };
 
 export const getCalendarDays = (year: number, month: number, startWeekOnSunday = true): CalendarDay[] => {
-  const daysInMonth = getDaysInMonth(year, month);
+  const daysInMonth = getDaysInMonth(year, month + 1);
   const firstDayOfWeek = getFirstDayOfMonth(year, month, startWeekOnSunday);
 
   const prevMonthDaysArray = getPreviousMonthDays(year, month, firstDayOfWeek);
@@ -160,4 +160,12 @@ export const calculateNewYear = (
     return currentYear + 1;
   }
   return currentYear;
+};
+
+export const isValidDateParts = (day?: number, month?: number, year?: number): boolean => {
+  if (!day || !month || !year) return false;
+
+  if (month < 1 || month > 12) return false;
+
+  return day >= 1 && day <= getDaysInMonth(month, year);
 };

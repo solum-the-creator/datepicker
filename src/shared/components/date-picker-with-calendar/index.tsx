@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { isDateWithinRange } from "@utils/dateHelpers";
+import { isDateWithinRange, isValidDateParts } from "@utils/dateHelpers";
 import { formatDate, parseDate } from "@utils/formatDatesHelpers";
 
 import { DateInput } from "@/shared/components/date-input";
@@ -48,13 +48,16 @@ export const DatePickerWithCalendar: React.FC<DatePickerWithCalendarProps> = ({
 
     if (input.length >= 10) {
       const parsedDate = parseDate(input);
-      if (parsedDate) {
-        if (!isDateWithinRange(parsedDate, minDate, maxDate)) {
-          setIsError(true);
-        } else {
-          setIsError(false);
-          onDateSelect?.(parsedDate);
-        }
+      const [day, month, year] = input.split(".").map(Number);
+
+      if (!isValidDateParts(day, month, year)) {
+        setIsError(true);
+        return;
+      }
+
+      if (parsedDate && isDateWithinRange(parsedDate, minDate, maxDate)) {
+        setIsError(false);
+        onDateSelect?.(parsedDate);
       } else {
         setIsError(true);
       }
