@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Todo } from "@customTypes/todo";
 import { ThemeProvider } from "styled-components";
 
 import { CalendarHeader } from "@/shared/components/calendar-header";
@@ -23,6 +24,7 @@ type CalendarProps = {
   maxDate?: Date;
   isRange?: boolean;
   withTodo?: boolean;
+  todos?: Todo[];
   holidays?: Holiday[];
   startWeekOnSunday?: boolean;
   highlightWeekends?: boolean;
@@ -40,6 +42,7 @@ export const Calendar: React.FC<CalendarProps> = ({
   holidays,
   onDateSelect,
   onRangeSelect,
+  todos,
   withTodo = false,
   isRange = false,
   highlightHolidays = false,
@@ -149,6 +152,8 @@ export const Calendar: React.FC<CalendarProps> = ({
             highlightWeekends={highlightWeekends}
             highlightHolidays={highlightHolidays}
             holidays={holidays}
+            withTodos={withTodo}
+            todos={todos}
             selectedDate={isRange ? undefined : value}
             rangeStart={isRange ? rangeStart : undefined}
             rangeEnd={isRange ? rangeEnd : undefined}

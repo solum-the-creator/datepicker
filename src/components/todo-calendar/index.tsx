@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Calendar } from "@components/calendar";
 import { Holiday } from "@customTypes/holidays";
 
-import { TodosProvider } from "@/shared/context/todosContext";
 import { withTodoLogic } from "@/shared/hoc/withTodoLogic";
 
 type TodoCalendarProps = {
@@ -19,9 +18,5 @@ export const TodoCalendar: React.FC<TodoCalendarProps> = ({ ...props }) => {
 
   const CalendarWithTodoLogic = withTodoLogic(Calendar);
 
-  return (
-    <TodosProvider>
-      <CalendarWithTodoLogic value={date} onDateSelect={setDate} {...props} />
-    </TodosProvider>
-  );
+  return <CalendarWithTodoLogic value={date} onDateSelect={setDate} {...props} />;
 };

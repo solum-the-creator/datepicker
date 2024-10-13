@@ -1,13 +1,15 @@
 import { useState } from "react";
+import { Todo } from "@customTypes/todo";
 
 import { CalendarButton } from "@/shared/components/calendar-button";
 import { TodoModal } from "@/shared/components/todo-modal";
 
-import { useTodos } from "../context/todosContext";
+import { useTodos } from "../hooks/useTodos";
 
 type WithTodoLogicProps = {
   value?: Date;
   withTodo?: boolean;
+  todos?: Todo[];
   onDateSelect?: (value?: Date) => void;
 };
 
@@ -27,7 +29,13 @@ export function withTodoLogic<P extends WithTodoLogicProps>(WrappedComponent: Re
 
     return (
       <>
-        <WrappedComponent {...(rest as P)} value={value} withTodo={true} onDateSelect={onDateSelect} />
+        <WrappedComponent
+          {...(rest as P)}
+          value={value}
+          todos={todos}
+          withTodo={true}
+          onDateSelect={onDateSelect}
+        />
 
         {value && (
           <CalendarButton onClick={() => setIsModalOpen(true)}>
