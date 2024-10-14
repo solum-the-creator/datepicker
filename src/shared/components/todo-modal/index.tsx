@@ -38,9 +38,19 @@ export const TodoModal: React.FC<TodoModalProps> = ({
   const ref = useRef<HTMLDivElement>(null);
   useClickOutside(ref, onClose);
 
+  const maxLength = 50;
+
   const handleTodoAdd = (text: string, date?: Date) => {
-    onTodoAdd(text, date);
-    setInputValue("");
+    if (text.length <= maxLength) {
+      onTodoAdd(text, date);
+      setInputValue("");
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.length <= maxLength) {
+      setInputValue(e.target.value);
+    }
   };
 
   if (!isOpen) {
@@ -56,9 +66,10 @@ export const TodoModal: React.FC<TodoModalProps> = ({
           <TodoInputContainer>
             <TodoInput
               type="text"
+              maxLength={maxLength}
               placeholder="Add a new task"
               value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
+              onChange={handleInputChange}
             />
             <AddButton onClick={() => handleTodoAdd(inputValue, date)} disabled={!inputValue}>
               Add task
