@@ -15,12 +15,12 @@ export function withRangeLogic<P extends WithRangeLogicProps>(WrappedComponent: 
   return (props: Omit<P, keyof WithRangeLogicProps> & WithRangeLogicProps) => {
     const { rangeStart, rangeEnd, minDate, maxDate, onRangeSelect, ...rest } = props;
 
-    const handleStartDateSelect = (start?: Date) => {
-      onRangeSelect?.(start, rangeEnd);
-    };
-
-    const handleEndDateSelect = (end?: Date) => {
-      onRangeSelect?.(rangeStart, end);
+    const handleRangeSelect = (start?: Date, end?: Date) => {
+      if (start && end && end < start) {
+        onRangeSelect?.(end, start);
+        return;
+      }
+      onRangeSelect?.(start, end);
     };
 
     return (
@@ -30,7 +30,7 @@ export function withRangeLogic<P extends WithRangeLogicProps>(WrappedComponent: 
           placeholder="Start date"
           minDate={minDate}
           maxDate={maxDate}
-          onDateSelect={handleStartDateSelect}>
+          onDateSelect={(date) => handleRangeSelect(date, rangeEnd)}>
           {(handleDateSelect) => (
             <WrappedComponent
               {...(rest as P)}
@@ -39,9 +39,7 @@ export function withRangeLogic<P extends WithRangeLogicProps>(WrappedComponent: 
               rangeEnd={rangeEnd}
               minDate={minDate}
               maxDate={maxDate}
-              onRangeSelect={(start) => {
-                handleDateSelect(start);
-              }}
+              onRangeSelect={(start) => handleDateSelect(start)}
             />
           )}
         </DatePickerWithCalendar>
@@ -51,7 +49,7 @@ export function withRangeLogic<P extends WithRangeLogicProps>(WrappedComponent: 
           placeholder="End date"
           minDate={minDate}
           maxDate={maxDate}
-          onDateSelect={handleEndDateSelect}>
+          onDateSelect={(date) => handleRangeSelect(rangeStart, date)}>
           {(handleDateSelect) => (
             <WrappedComponent
               {...(rest as P)}

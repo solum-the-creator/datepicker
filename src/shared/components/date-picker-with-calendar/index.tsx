@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { isDateWithinRange, isValidDateParts } from "@utils/dateHelpers";
 import { formatDate, parseDate } from "@utils/formatDatesHelpers";
 
@@ -29,6 +29,10 @@ export const DatePickerWithCalendar: React.FC<DatePickerWithCalendarProps> = ({
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [inputValue, setInputValue] = useState(value ? formatDate(value) : "");
   const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    setInputValue(value ? formatDate(value) : "");
+  }, [value]);
 
   const handleClickOutside = () => {
     setIsCalendarOpen(false);

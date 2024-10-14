@@ -96,23 +96,7 @@ export const Calendar: React.FC<CalendarProps> = ({
   const handleRangeDateSelect = (date: Date) => {
     if (!onRangeSelect) return;
 
-    if (rangeStart && rangeEnd) {
-      if (date < rangeStart) {
-        onRangeSelect(date, rangeEnd);
-      } else if (date > rangeEnd) {
-        onRangeSelect(rangeStart, date);
-      } else {
-        onRangeSelect(date, rangeEnd);
-      }
-    } else if (rangeStart && !rangeEnd) {
-      if (date < rangeStart) {
-        onRangeSelect(date, rangeStart);
-      } else {
-        onRangeSelect(rangeStart, date);
-      }
-    } else {
-      onRangeSelect(date, undefined);
-    }
+    onRangeSelect(date, date);
   };
 
   const handleDateSelect = (date: Date) => {
