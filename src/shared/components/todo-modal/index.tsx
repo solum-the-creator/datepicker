@@ -11,6 +11,7 @@ import {
   AddButton,
   CloseButton,
   CloseButtonContainer,
+  EmptyTodosList,
   ModalTitle,
   TodoInput,
   TodoInputContainer,
@@ -76,7 +77,11 @@ export const TodoModal: React.FC<TodoModalProps> = ({
             </AddButton>
           </TodoInputContainer>
 
-          <TodoList todos={todos} onTodoRemove={onTodoRemove} />
+          {todos.length === 0 ? (
+            <EmptyTodosList>Your task list is empty</EmptyTodosList>
+          ) : (
+            <TodoList todos={todos} onTodoRemove={onTodoRemove} />
+          )}
 
           <CloseButtonContainer>
             <CloseButton onClick={onClose}>Close</CloseButton>

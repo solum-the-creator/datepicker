@@ -73,3 +73,14 @@ export const CloseButton = styled.button`
     background-color: ${({ theme }) => theme.colors.activeBright};
   }
 `;
+
+export const EmptyTodosList = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 10rem;
+
+  font-size: 1rem;
+  font-weight: 500;
+`;
