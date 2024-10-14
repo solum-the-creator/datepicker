@@ -9,6 +9,8 @@ const CalendarWithRangeLogic = withRangeLogic(Calendar);
 type RangeCalendarProps = {
   minDate?: Date;
   maxDate?: Date;
+  labelStart?: string;
+  labelEnd?: string;
   startWeekOnSunday?: boolean;
   highlightWeekends?: boolean;
   highlightHolidays?: boolean;

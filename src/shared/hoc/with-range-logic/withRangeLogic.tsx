@@ -2,6 +2,11 @@ import { DatePickerWithCalendar } from "@/shared/components/date-picker-with-cal
 
 import { RangeContainer } from "./with-range-logic.styled";
 
+type RangeLogicProps = {
+  labelStart?: string;
+  labelEnd?: string;
+};
+
 type WithRangeLogicProps = {
   rangeStart?: Date;
   rangeEnd?: Date;
@@ -12,8 +17,8 @@ type WithRangeLogicProps = {
 };
 
 export function withRangeLogic<P extends WithRangeLogicProps>(WrappedComponent: React.ComponentType<P>) {
-  return (props: Omit<P, keyof WithRangeLogicProps> & WithRangeLogicProps) => {
-    const { rangeStart, rangeEnd, minDate, maxDate, onRangeSelect, ...rest } = props;
+  return (props: Omit<P, keyof WithRangeLogicProps> & WithRangeLogicProps & RangeLogicProps) => {
+    const { rangeStart, rangeEnd, minDate, maxDate, onRangeSelect, labelStart, labelEnd, ...rest } = props;
 
     const handleRangeSelect = (start?: Date, end?: Date) => {
       if (start && end && end < start) {
@@ -27,6 +32,7 @@ export function withRangeLogic<P extends WithRangeLogicProps>(WrappedComponent: 
       <RangeContainer>
         <DatePickerWithCalendar
           value={rangeStart}
+          label={labelStart}
           placeholder="Start date"
           minDate={minDate}
           maxDate={maxDate}
@@ -46,6 +52,7 @@ export function withRangeLogic<P extends WithRangeLogicProps>(WrappedComponent: 
 
         <DatePickerWithCalendar
           value={rangeEnd}
+          label={labelEnd}
           placeholder="End date"
           minDate={minDate}
           maxDate={maxDate}

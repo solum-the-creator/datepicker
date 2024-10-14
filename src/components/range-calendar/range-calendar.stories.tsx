@@ -14,6 +14,8 @@ export const Default: Story = {
     startWeekOnSunday: false,
     highlightWeekends: true,
     highlightHolidays: false,
+    labelStart: "Start date",
+    labelEnd: "End date",
     holidays: undefined,
     minDate: undefined,
     maxDate: undefined,

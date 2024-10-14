@@ -9,6 +9,7 @@ export const CalendarWithPickerLogic = withPickerLogic(Calendar);
 type BaseCalendarProps = {
   minDate?: Date;
   maxDate?: Date;
+  label?: string;
   startWeekOnSunday?: boolean;
   highlightWeekends?: boolean;
   highlightHolidays?: boolean;

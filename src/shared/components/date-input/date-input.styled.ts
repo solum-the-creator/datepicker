@@ -1,5 +1,11 @@
 import styled from "styled-components";
 
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+`;
+
 export const InputContainer = styled.div<{ $isError?: boolean }>`
   width: 100%;
   max-width: 250px;
@@ -30,6 +36,10 @@ export const Input = styled.input<{ $isError?: boolean }>`
   &:focus {
     outline: none;
   }
+`;
+
+export const Label = styled.label`
+  color: ${({ theme }) => theme.colors.secondary};
 `;
 
 export const ClearButton = styled.button`

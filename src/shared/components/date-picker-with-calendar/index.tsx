@@ -9,6 +9,7 @@ import { CalendarContainer, PickerContainer } from "./date-picker-with-calendar"
 
 type DatePickerWithCalendarProps = {
   value?: Date;
+  label?: string;
   onDateSelect?: (date?: Date) => void;
   placeholder?: string;
   minDate?: Date;
@@ -18,6 +19,7 @@ type DatePickerWithCalendarProps = {
 
 export const DatePickerWithCalendar: React.FC<DatePickerWithCalendarProps> = ({
   value,
+  label,
   children,
   onDateSelect,
   minDate,
@@ -85,6 +87,7 @@ export const DatePickerWithCalendar: React.FC<DatePickerWithCalendarProps> = ({
     <PickerContainer ref={ref}>
       <DateInput
         value={inputValue}
+        label={label}
         placeholder={placeholder}
         onChange={handleInputChange}
         onFocus={handleFocus}

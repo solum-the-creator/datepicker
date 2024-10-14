@@ -1,5 +1,9 @@
 import { DatePickerWithCalendar } from "@/shared/components/date-picker-with-calendar";
 
+type PickerLogicProps = {
+  label?: string;
+};
+
 type WithPickerLogicProps = {
   value?: Date;
   onDateSelect?: (date?: Date) => void;
@@ -8,12 +12,13 @@ type WithPickerLogicProps = {
 };
 
 export function withPickerLogic<P extends WithPickerLogicProps>(WrappedComponent: React.ComponentType<P>) {
-  return (props: Omit<P, keyof WithPickerLogicProps> & WithPickerLogicProps) => {
-    const { value, onDateSelect, minDate, maxDate, ...rest } = props;
+  return (props: Omit<P, keyof WithPickerLogicProps> & WithPickerLogicProps & PickerLogicProps) => {
+    const { value, onDateSelect, minDate, maxDate, label, ...rest } = props;
 
     return (
       <DatePickerWithCalendar
         value={value}
+        label={label}
         placeholder="Select date"
         onDateSelect={onDateSelect}
         minDate={minDate}

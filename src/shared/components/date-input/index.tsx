@@ -3,10 +3,11 @@ import { CloseIcon } from "@/shared/components/icons/close-icon";
 import { ThemeWrapper } from "@/shared/components/theme-wrapper";
 import { formatDateInputValue } from "@/shared/utils/formatDatesHelpers";
 
-import { ClearButton, IconContainer, Input, InputContainer } from "./date-input.styled";
+import { ClearButton, Container, IconContainer, Input, InputContainer, Label } from "./date-input.styled";
 
 type DateInputProps = {
   value: string;
+  label?: string;
   placeholder?: string;
   isError?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -16,6 +17,7 @@ type DateInputProps = {
 
 export const DateInput: React.FC<DateInputProps> = ({
   value,
+  label,
   placeholder,
   isError,
   onChange,
@@ -37,24 +39,27 @@ export const DateInput: React.FC<DateInputProps> = ({
 
   return (
     <ThemeWrapper>
-      <InputContainer $isError={isError}>
-        <IconContainer>
-          <CalendarIcon />
-        </IconContainer>
-        <Input
-          type="text"
-          placeholder={placeholder}
-          autoComplete="off"
-          onChange={handleInputChange}
-          onFocus={handleInputFocus}
-          value={value}
-        />
-        {value && (
-          <ClearButton onClick={handleClear}>
-            <CloseIcon />
-          </ClearButton>
-        )}
-      </InputContainer>
+      <Container>
+        {label && <Label>{label}</Label>}
+        <InputContainer $isError={isError}>
+          <IconContainer>
+            <CalendarIcon />
+          </IconContainer>
+          <Input
+            type="text"
+            placeholder={placeholder}
+            autoComplete="off"
+            onChange={handleInputChange}
+            onFocus={handleInputFocus}
+            value={value}
+          />
+          {value && (
+            <ClearButton onClick={handleClear}>
+              <CloseIcon />
+            </ClearButton>
+          )}
+        </InputContainer>
+      </Container>
     </ThemeWrapper>
   );
 };
