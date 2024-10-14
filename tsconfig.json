@@ -30,9 +30,9 @@
     "paths": {
       "@components/*": ["src/components/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@utils/*": ["src/utils/*"],
-      "@customTypes/*": ["src/types/*"],
-      "@styles/*": ["src/styles/*"],
+      "@utils/*": ["src/shared/utils/*"],
+      "@customTypes/*": ["src/shared/types/*"],
+      "@styles/*": ["src/shared/styles/*"],
       "@/*": ["src/*"]
     }
   },

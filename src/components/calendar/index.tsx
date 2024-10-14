@@ -1,46 +1,57 @@
 import { useState } from "react";
-import { CalendarHeader } from "@components/calendar-header";
-import { CalendarDaysView } from "@components/calendar-views/calendar-days-view";
-import { CalendarMonthsView } from "@components/calendar-views/calendar-months-view";
-import { CalendarYearsView } from "@components/calendar-views/calendar-years-view";
-import { Holiday } from "@customTypes/holidays";
-import GlobalStyles from "@styles/global";
-import { theme } from "@styles/theme";
-import { getMonthName } from "@utils/dateHelpers";
+import { Todo } from "@customTypes/todo";
 import { ThemeProvider } from "styled-components";
+
+import { CalendarHeader } from "@/shared/components/calendar-header";
+import { CalendarDaysView } from "@/shared/components/calendar-views/calendar-days-view";
+import { CalendarMonthsView } from "@/shared/components/calendar-views/calendar-months-view";
+import { CalendarYearsView } from "@/shared/components/calendar-views/calendar-years-view";
+import { useCalendarDate } from "@/shared/hooks/useCalendarDate";
+import GlobalStyles from "@/shared/styles/global";
+import { theme } from "@/shared/styles/theme";
+import { Holiday } from "@/shared/types/holidays";
+import { calculateNewMonth, calculateNewYear, isDateWithinRange } from "@/shared/utils/dateHelpers";
 
 import { CalendarContainer } from "./calendar.styled";
 
 export type View = "days" | "months" | "years";
 
 type CalendarProps = {
-  currentMonth: number;
-  currentYear: number;
-  selectedDate?: Date;
+  value?: Date;
+  rangeStart?: Date;
+  rangeEnd?: Date;
+  minDate?: Date;
+  maxDate?: Date;
+  isRange?: boolean;
+  withTodo?: boolean;
+  todos?: Todo[];
+  holidays?: Holiday[];
   startWeekOnSunday?: boolean;
   highlightWeekends?: boolean;
   highlightHolidays?: boolean;
-  holidays?: Holiday[];
-  minDate?: Date;
-  maxDate?: Date;
-  onMonthChange?: (month: number, year: number) => void;
-  onDateSelect?: (date: Date) => void;
+  onDateSelect?: (date?: Date) => void;
+  onRangeSelect?: (start?: Date, end?: Date) => void;
 };
 
 export const Calendar: React.FC<CalendarProps> = ({
-  currentMonth,
-  currentYear,
-  onMonthChange,
-  onDateSelect,
-  holidays,
-  selectedDate,
+  value,
+  rangeStart,
+  rangeEnd,
   minDate,
   maxDate,
+  holidays,
+  onDateSelect,
+  onRangeSelect,
+  todos,
+  withTodo = false,
+  isRange = false,
   highlightHolidays = false,
   highlightWeekends = false,
   startWeekOnSunday = true,
 }) => {
   const [view, setView] = useState<View>("days");
+
+  const { currentMonth, currentYear, handleMonthYearChange } = useCalendarDate(value, rangeStart, rangeEnd);
 
   const handleMonthClick = () => {
     setView("months");
@@ -50,54 +61,65 @@ export const Calendar: React.FC<CalendarProps> = ({
     setView("years");
   };
 
-  const handlePrevClick = () => {
+  const changeMonthYear = (step: number) => {
     if (view === "days") {
-      const newMonth = currentMonth === 0 ? 11 : currentMonth - 1;
-      const newYear = currentMonth === 0 ? currentYear - 1 : currentYear;
-
-      onMonthChange?.(newMonth, newYear);
+      const newMonth = calculateNewMonth(currentMonth, step);
+      const newYear = calculateNewYear(currentMonth, step, newMonth, currentYear);
+      handleMonthYearChange(newMonth, newYear);
     } else if (view === "months") {
-      onMonthChange?.(currentMonth, currentYear - 1);
+      handleMonthYearChange(currentMonth, currentYear + step);
     } else if (view === "years") {
-      onMonthChange?.(currentMonth, currentYear - 12);
+      handleMonthYearChange(currentMonth, currentYear + step * 12);
     }
   };
 
-  const handleNextClick = () => {
-    if (view === "days") {
-      const newMonth = currentMonth === 11 ? 0 : currentMonth + 1;
-      const newYear = currentMonth === 11 ? currentYear + 1 : currentYear;
-      onMonthChange?.(newMonth, newYear);
-    } else if (view === "months") {
-      onMonthChange?.(currentMonth, currentYear + 1);
-    } else if (view === "years") {
-      onMonthChange?.(currentMonth, currentYear + 12);
-    }
-  };
+  const handlePrevClick = () => changeMonthYear(-1);
+
+  const handleNextClick = () => changeMonthYear(1);
 
   const handleMonthSelect = (month: number) => {
     setView("days");
-    onMonthChange?.(month, currentYear);
+    handleMonthYearChange(month, currentYear);
   };
 
   const handleYearSelect = (year: number) => {
     setView("months");
-    onMonthChange?.(currentMonth, year);
+    handleMonthYearChange(currentMonth, year);
   };
 
-  const handleDateClick = (date: Date) => {
-    onDateSelect?.(date);
+  const handleSingleDateSelect = (date: Date) => {
+    if (onDateSelect) {
+      onDateSelect(date);
+    }
+  };
+
+  const handleRangeDateSelect = (date: Date) => {
+    if (!onRangeSelect) return;
+
+    onRangeSelect(date, date);
+  };
+
+  const handleDateSelect = (date: Date) => {
+    if (!isDateWithinRange(date, minDate, maxDate)) return;
+
+    if (isRange) {
+      handleRangeDateSelect(date);
+    } else {
+      handleSingleDateSelect(date);
+    }
   };
 
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
 
-      <CalendarContainer>
+      <CalendarContainer $withTodo={withTodo}>
         <CalendarHeader
-          month={getMonthName(currentMonth)}
+          month={currentMonth}
           year={currentYear}
           view={view}
+          minDate={minDate}
+          maxDate={maxDate}
           onPrevClick={handlePrevClick}
           onNextClick={handleNextClick}
           onMonthClick={handleMonthClick}
@@ -114,16 +136,33 @@ export const Calendar: React.FC<CalendarProps> = ({
             highlightWeekends={highlightWeekends}
             highlightHolidays={highlightHolidays}
             holidays={holidays}
-            selectedDate={selectedDate}
-            onDateSelect={handleDateClick}
+            withTodos={withTodo}
+            todos={todos}
+            selectedDate={isRange ? undefined : value}
+            rangeStart={isRange ? rangeStart : undefined}
+            rangeEnd={isRange ? rangeEnd : undefined}
+            onDateSelect={handleDateSelect}
           />
         )}
 
         {view === "months" && (
-          <CalendarMonthsView currentMonth={currentMonth} onMonthSelect={handleMonthSelect} />
+          <CalendarMonthsView
+            currentMonth={currentMonth}
+            currentYear={currentYear}
+            onMonthSelect={handleMonthSelect}
+            minDate={minDate}
+            maxDate={maxDate}
+          />
         )}
 
-        {view === "years" && <CalendarYearsView currentYear={currentYear} onYearSelect={handleYearSelect} />}
+        {view === "years" && (
+          <CalendarYearsView
+            currentYear={currentYear}
+            onYearSelect={handleYearSelect}
+            minDate={minDate}
+            maxDate={maxDate}
+          />
+        )}
       </CalendarContainer>
     </ThemeProvider>
   );

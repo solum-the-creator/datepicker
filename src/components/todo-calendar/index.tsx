@@ -1,13 +1,22 @@
 import { useState } from "react";
 import { Calendar } from "@components/calendar";
-import { withCalendarLogic } from "@components/hoc/withCalendarLogic";
-import { withTodoLogic } from "@components/hoc/withTodoLogic";
+import { Holiday } from "@customTypes/holidays";
 
-const CalendarWithLogic = withCalendarLogic(Calendar);
-const CalendarWithTodoLogic = withTodoLogic(CalendarWithLogic);
+import { withTodoLogic } from "@/shared/hoc/withTodoLogic";
 
-export const TodoCalendar: React.FC = () => {
-  const [date, setDate] = useState<Date | undefined>(new Date());
+type TodoCalendarProps = {
+  minDate?: Date;
+  maxDate?: Date;
+  startWeekOnSunday?: boolean;
+  highlightWeekends?: boolean;
+  highlightHolidays?: boolean;
+  holidays?: Holiday[];
+};
 
-  return <CalendarWithTodoLogic value={date} onSelect={setDate} />;
+export const TodoCalendar: React.FC<TodoCalendarProps> = ({ ...props }) => {
+  const [date, setDate] = useState<Date>();
+
+  const CalendarWithTodoLogic = withTodoLogic(Calendar);
+
+  return <CalendarWithTodoLogic value={date} onDateSelect={setDate} {...props} />;
 };
