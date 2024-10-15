@@ -21,10 +21,6 @@ export function withRangeLogic<P extends WithRangeLogicProps>(WrappedComponent: 
     const { rangeStart, rangeEnd, minDate, maxDate, onRangeSelect, labelStart, labelEnd, ...rest } = props;
 
     const handleRangeSelect = (start?: Date, end?: Date) => {
-      if (start && end && end < start) {
-        onRangeSelect?.(end, start);
-        return;
-      }
       onRangeSelect?.(start, end);
     };
 
@@ -35,7 +31,7 @@ export function withRangeLogic<P extends WithRangeLogicProps>(WrappedComponent: 
           label={labelStart}
           placeholder="Start date"
           minDate={minDate}
-          maxDate={maxDate}
+          maxDate={rangeEnd || maxDate}
           onDateSelect={(date) => handleRangeSelect(date, rangeEnd)}>
           {(handleDateSelect) => (
             <WrappedComponent
@@ -44,7 +40,7 @@ export function withRangeLogic<P extends WithRangeLogicProps>(WrappedComponent: 
               rangeStart={rangeStart}
               rangeEnd={rangeEnd}
               minDate={minDate}
-              maxDate={maxDate}
+              maxDate={rangeEnd || maxDate}
               onRangeSelect={(start) => handleDateSelect(start)}
             />
           )}
@@ -54,7 +50,7 @@ export function withRangeLogic<P extends WithRangeLogicProps>(WrappedComponent: 
           value={rangeEnd}
           label={labelEnd}
           placeholder="End date"
-          minDate={minDate}
+          minDate={rangeStart || minDate}
           maxDate={maxDate}
           onDateSelect={(date) => handleRangeSelect(rangeStart, date)}>
           {(handleDateSelect) => (
@@ -63,7 +59,7 @@ export function withRangeLogic<P extends WithRangeLogicProps>(WrappedComponent: 
               isRange={true}
               rangeStart={rangeStart}
               rangeEnd={rangeEnd}
-              minDate={minDate}
+              minDate={rangeStart || minDate}
               maxDate={maxDate}
               onRangeSelect={(_, end) => {
                 handleDateSelect(end);
