@@ -15,6 +15,16 @@ export function withPickerLogic<P extends WithPickerLogicProps>(WrappedComponent
   return (props: Omit<P, keyof WithPickerLogicProps> & WithPickerLogicProps & PickerLogicProps) => {
     const { value, onDateSelect, minDate, maxDate, label, ...rest } = props;
 
+    const renderWrappedComponent = (handleDateSelect: (date?: Date) => void) => (
+      <WrappedComponent
+        {...(rest as P)}
+        value={value}
+        onDateSelect={handleDateSelect}
+        minDate={minDate}
+        maxDate={maxDate}
+      />
+    );
+
     return (
       <DatePickerWithCalendar
         value={value}
@@ -23,15 +33,7 @@ export function withPickerLogic<P extends WithPickerLogicProps>(WrappedComponent
         onDateSelect={onDateSelect}
         minDate={minDate}
         maxDate={maxDate}>
-        {(handleDateSelect) => (
-          <WrappedComponent
-            {...(rest as P)}
-            value={value}
-            onDateSelect={handleDateSelect}
-            minDate={minDate}
-            maxDate={maxDate}
-          />
-        )}
+        {renderWrappedComponent}
       </DatePickerWithCalendar>
     );
   };
