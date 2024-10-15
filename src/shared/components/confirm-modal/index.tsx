@@ -26,12 +26,8 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({ title, onCancel, onC
       <ConfirmModalContent ref={confirmRef}>
         <ConfrirmTitle>{title}</ConfrirmTitle>
         <ButtonsContainer>
-          <ConfirmButton type="button" onClick={onConfirm}>
-            Yes
-          </ConfirmButton>
-          <CancelButton type="button" onClick={onCancel}>
-            Cancel
-          </CancelButton>
+          <ConfirmButton onClick={onConfirm}>Yes</ConfirmButton>
+          <CancelButton onClick={onCancel}>Cancel</CancelButton>
         </ButtonsContainer>
       </ConfirmModalContent>
     </ConfirmModalContainer>

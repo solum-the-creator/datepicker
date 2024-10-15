@@ -10,9 +10,7 @@ type CalendarButtonProps = {
 export const CalendarButton: React.FC<CalendarButtonProps> = ({ children, onClick }) => {
   return (
     <ThemeWrapper>
-      <CalendarButtonStyled type="button" onClick={onClick}>
-        {children}
-      </CalendarButtonStyled>
+      <CalendarButtonStyled onClick={onClick}>{children}</CalendarButtonStyled>
     </ThemeWrapper>
   );
 };

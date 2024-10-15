@@ -107,7 +107,6 @@ export const CalendarDaysView: React.FC<CalendarDaysViewProps> = ({
             return (
               <DayCell
                 key={`${currentYear}-${currentMonth}-${day}`}
-                type="button"
                 role="gridcell"
                 disabled={isDisabled}
                 onClick={() => handleDateClick(day, currentMonth, currentYear)}
