@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { View } from "@customTypes/calendar";
 import { Todo } from "@customTypes/todo";
 import { ThemeProvider } from "styled-components";
 
@@ -13,8 +14,6 @@ import { Holiday } from "@/shared/types/holidays";
 import { calculateNewMonth, calculateNewYear, isDateWithinRange } from "@/shared/utils/dateHelpers";
 
 import { CalendarContainer } from "./calendar.styled";
-
-export type View = "days" | "months" | "years";
 
 type CalendarProps = {
   value?: Date;
@@ -62,14 +61,23 @@ export const Calendar: React.FC<CalendarProps> = ({
   };
 
   const changeMonthYear = (step: number) => {
-    if (view === "days") {
-      const newMonth = calculateNewMonth(currentMonth, step);
-      const newYear = calculateNewYear(currentMonth, step, newMonth, currentYear);
-      handleMonthYearChange(newMonth, newYear);
-    } else if (view === "months") {
-      handleMonthYearChange(currentMonth, currentYear + step);
-    } else if (view === "years") {
-      handleMonthYearChange(currentMonth, currentYear + step * 12);
+    switch (view) {
+      case "days": {
+        const newMonth = calculateNewMonth(currentMonth, step);
+        const newYear = calculateNewYear(currentMonth, step, newMonth, currentYear);
+        handleMonthYearChange(newMonth, newYear);
+        break;
+      }
+      case "months": {
+        handleMonthYearChange(currentMonth, currentYear + step);
+        break;
+      }
+      case "years": {
+        handleMonthYearChange(currentMonth, currentYear + step * 12);
+        break;
+      }
+      default:
+        break;
     }
   };
 
