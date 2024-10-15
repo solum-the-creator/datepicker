@@ -73,10 +73,8 @@ export const getMonthName = (month: number) => {
 };
 
 export const getWeekDaysNames = (startWeekOnSunday = true) => {
-  if (startWeekOnSunday) {
-    return ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
-  }
-  return ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
+  const week = ["Mo", "Tu", "We", "Th", "Fr", "Sa"];
+  return startWeekOnSunday ? ["Su", ...week] : [...week, "Su"];
 };
 
 export const isWeekend = (dayIndex: number, startWeekOnSunday: boolean): boolean => {
