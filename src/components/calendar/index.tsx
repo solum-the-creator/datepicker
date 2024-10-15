@@ -102,7 +102,9 @@ export const Calendar: React.FC<CalendarProps> = ({
   };
 
   const handleRangeDateSelect = (date: Date) => {
-    if (!onRangeSelect) return;
+    if (!onRangeSelect) {
+      return;
+    }
 
     onRangeSelect(date, date);
   };
