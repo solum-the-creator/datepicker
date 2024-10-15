@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { isDateWithinRange, isValidDateParts } from "@utils/dateHelpers";
 import { formatDate, parseDate } from "@utils/formatDatesHelpers";
+import { isValidInputLength } from "@utils/validation";
 
 import { DateInput } from "@/shared/components/date-input";
 import { useClickOutside } from "@/shared/hooks/useClickOutside";
@@ -48,28 +49,33 @@ export const DatePickerWithCalendar: React.FC<DatePickerWithCalendarProps> = ({
     onDateSelect?.(date);
   };
 
+  const handleValidDate = (input: string) => {
+    const parsedDate = parseDate(input);
+    const [day, month, year] = input.split(".").map(Number);
+
+    if (!isValidDateParts(day, month, year) || !parsedDate) {
+      setIsError(true);
+      return;
+    }
+
+    if (isDateWithinRange(parsedDate, minDate, maxDate)) {
+      setIsError(false);
+      onDateSelect?.(parsedDate);
+    } else {
+      setIsError(true);
+    }
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
     setInputValue(input);
 
-    if (input.length >= 10) {
-      const parsedDate = parseDate(input);
-      const [day, month, year] = input.split(".").map(Number);
-
-      if (!isValidDateParts(day, month, year)) {
-        setIsError(true);
-        return;
-      }
-
-      if (parsedDate && isDateWithinRange(parsedDate, minDate, maxDate)) {
-        setIsError(false);
-        onDateSelect?.(parsedDate);
-      } else {
-        setIsError(true);
-      }
-    } else {
+    if (!isValidInputLength(input)) {
       setIsError(false);
+      return;
     }
+
+    handleValidDate(input);
   };
 
   const handleFocus = () => {

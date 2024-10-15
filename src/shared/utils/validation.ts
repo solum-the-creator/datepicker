@@ -74,3 +74,5 @@ export const isMonthDisabled = (month: number, year: number, minDate?: Date, max
   }
   return false;
 };
+
+export const isValidInputLength = (input: string): boolean => input.length >= 10;
