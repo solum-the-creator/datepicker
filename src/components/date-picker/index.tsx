@@ -17,7 +17,7 @@ type BaseCalendarProps = {
 };
 
 export const BaseCalendarWithPicker: React.FC<BaseCalendarProps> = ({ ...props }) => {
-  const [value, setValue] = useState<Date | undefined>(undefined);
+  const [value, setValue] = useState<Date>();
 
   return <CalendarWithPickerLogic value={value} onDateSelect={setValue} {...props} />;
 };

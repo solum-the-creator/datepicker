@@ -13,6 +13,6 @@ type BaseCalendarProps = {
 };
 
 export const BaseCalendar: React.FC<BaseCalendarProps> = ({ ...props }) => {
-  const [value, setValue] = useState<Date | undefined>(new Date());
+  const [value, setValue] = useState<Date>();
   return <Calendar value={value} onDateSelect={setValue} {...props} />;
 };
