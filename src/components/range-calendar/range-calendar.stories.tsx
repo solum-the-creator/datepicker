@@ -16,8 +16,5 @@ export const Default: Story = {
     highlightHolidays: false,
     labelStart: "Start date",
     labelEnd: "End date",
-    holidays: undefined,
-    minDate: undefined,
-    maxDate: undefined,
   },
 };

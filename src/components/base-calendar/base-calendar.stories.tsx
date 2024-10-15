@@ -14,9 +14,6 @@ export const Base: Story = {
     startWeekOnSunday: false,
     highlightWeekends: true,
     highlightHolidays: false,
-    holidays: undefined,
-    minDate: undefined,
-    maxDate: undefined,
   },
 };
 
