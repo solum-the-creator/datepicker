@@ -159,11 +159,3 @@ export const calculateNewYear = (
   }
   return currentYear;
 };
-
-export const isValidDateParts = (day?: number, month?: number, year?: number): boolean => {
-  if (!day || !month || !year) return false;
-
-  if (month < 1 || month > 12) return false;
-
-  return day >= 1 && day <= getDaysInMonth(month, year);
-};
