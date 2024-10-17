@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useMemo } from "react";
 import { Calendar } from "@components/calendar";
 import { Holiday } from "@customTypes/holidays";
 
 import { withTodoLogic } from "@/shared/hoc/withTodoLogic";
 
 type TodoCalendarProps = {
+  value?: Date;
+  onDateSelect?: (date?: Date) => void;
   minDate?: Date;
   maxDate?: Date;
   startWeekOnSunday?: boolean;
@@ -14,9 +16,7 @@ type TodoCalendarProps = {
 };
 
 export const TodoCalendar: React.FC<TodoCalendarProps> = ({ ...props }) => {
-  const [date, setDate] = useState<Date>();
+  const CalendarWithTodoLogic = useMemo(() => withTodoLogic(Calendar), []);
 
-  const CalendarWithTodoLogic = withTodoLogic(Calendar);
-
-  return <CalendarWithTodoLogic value={date} onDateSelect={setDate} {...props} />;
+  return <CalendarWithTodoLogic {...props} />;
 };
