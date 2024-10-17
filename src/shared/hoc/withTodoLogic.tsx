@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Todo } from "@customTypes/todo";
 
 import { CalendarButton } from "@/shared/components/calendar-button";
@@ -25,7 +25,10 @@ export function withTodoLogic<P extends WithTodoLogicProps>(WrappedComponent: Re
       addTodo(text, date);
     };
 
-    const todosForSelectedDate = todos.filter((todo) => todo.date.toDateString() === value?.toDateString());
+    const todosForSelectedDate = useMemo(
+      () => todos.filter((todo) => todo.date.toDateString() === value?.toDateString()),
+      [todos, value]
+    );
 
     return (
       <>
