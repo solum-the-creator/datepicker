@@ -54,7 +54,7 @@ export const DateInput: React.FC<DateInputProps> = ({
             value={value}
           />
           {value && (
-            <ClearButton onClick={handleClear}>
+            <ClearButton onClick={handleClear} data-testid="clear-button">
               <CloseIcon />
             </ClearButton>
           )}

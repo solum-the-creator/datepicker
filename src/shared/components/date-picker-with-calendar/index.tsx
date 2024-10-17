@@ -100,7 +100,9 @@ export const DatePickerWithCalendar: React.FC<DatePickerWithCalendarProps> = ({
         onClear={handleClearClick}
         isError={isError}
       />
-      {isCalendarOpen && <CalendarContainer>{children(handleDateSelect)}</CalendarContainer>}
+      {isCalendarOpen && (
+        <CalendarContainer data-testid="calendar-container">{children(handleDateSelect)}</CalendarContainer>
+      )}
     </PickerContainer>
   );
 };
