@@ -1,4 +1,4 @@
-import { View } from "@components/calendar";
+import { View } from "@customTypes/calendar";
 import { getMonthName } from "@utils/dateHelpers";
 import { getCalendarTitle } from "@utils/formatDatesHelpers";
 import { canGoNext, canGoPrev } from "@utils/validation";
@@ -47,7 +47,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 
   return (
     <HeaderContainer>
-      <ArrowButton onClick={handlePrevClick} disabled={!isCanGoPrev}>
+      <ArrowButton onClick={handlePrevClick} disabled={!isCanGoPrev} data-testid="prev-button">
         {"<<"}
       </ArrowButton>
       <MonthYearText>
@@ -60,7 +60,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
           <TextButton onClick={onYearClick}>{title}</TextButton>
         )}
       </MonthYearText>
-      <ArrowButton onClick={handleNextClick} disabled={!isCanGoNext}>
+      <ArrowButton onClick={handleNextClick} disabled={!isCanGoNext} data-testid="next-button">
         {">>"}
       </ArrowButton>
     </HeaderContainer>

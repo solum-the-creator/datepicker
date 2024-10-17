@@ -92,6 +92,9 @@ export const CalendarDaysView: React.FC<CalendarDaysViewProps> = ({
         {enhancedDays.map((dayInfo) => (
           <DayCell
             key={`${dayInfo.year}-${dayInfo.month}-${dayInfo.day}`}
+            data-day={dayInfo.day}
+            data-month={dayInfo.month}
+            data-year={dayInfo.year}
             onClick={() => handleDateClick(dayInfo.day, dayInfo.month, dayInfo.year)}
             {...getDayProps(dayInfo)}>
             {dayInfo.day}
