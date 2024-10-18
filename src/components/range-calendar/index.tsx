@@ -6,7 +6,7 @@ import { Theme } from "@styles/theme";
 import { ThemeWrapper } from "@/shared/components/theme-wrapper";
 import { withRangeLogic } from "@/shared/hoc/with-range-logic/withRangeLogic";
 
-type RangeCalendarProps = {
+export type RangeCalendarProps = {
   rangeStart?: Date;
   rangeEnd?: Date;
   onRangeSelect?: (start?: Date, end?: Date) => void;

@@ -30,6 +30,10 @@ export function withTodoLogic<P extends WithTodoLogicProps>(WrappedComponent: Re
       [todos, value]
     );
 
+    const handleClose = () => {
+      setIsModalOpen(false);
+    };
+
     return (
       <>
         <WrappedComponent
@@ -50,7 +54,7 @@ export function withTodoLogic<P extends WithTodoLogicProps>(WrappedComponent: Re
           isOpen={isModalOpen}
           date={value}
           todos={todosForSelectedDate}
-          onClose={() => setIsModalOpen(false)}
+          onClose={handleClose}
           onTodoAdd={handleTodoAdd}
           onTodoRemove={removeTodo}
         />

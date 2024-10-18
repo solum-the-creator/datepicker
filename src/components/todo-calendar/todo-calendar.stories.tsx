@@ -1,25 +1,26 @@
 import { useState } from "react";
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { TodoCalendar } from ".";
 
 export default {
   title: "Components/TodoCalendar",
   component: TodoCalendar,
-} as Meta;
+} as Meta<typeof TodoCalendar>;
 
-type Story = StoryObj<typeof TodoCalendar>;
-
-const WithOnChangeProp = () => {
+const Template: StoryFn<typeof TodoCalendar> = (args) => {
   const [value, setValue] = useState<Date>();
 
-  const onChange = (value?: Date) => {
+  const onDateSelect = (value?: Date) => {
     setValue(value);
   };
 
-  return <TodoCalendar value={value} onDateSelect={onChange} />;
+  return <TodoCalendar {...args} value={value} onDateSelect={onDateSelect} />;
 };
 
-export const Default: Story = {
-  render: () => <WithOnChangeProp />,
+export const Default = Template.bind({});
+Default.args = {
+  startWeekOnSunday: false,
+  highlightWeekends: true,
+  highlightHolidays: false,
 };
