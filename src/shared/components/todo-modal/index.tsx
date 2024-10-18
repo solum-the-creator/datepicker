@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
 
-import { ThemeWrapper } from "@/shared/components/theme-wrapper";
 import { useClickOutside } from "@/shared/hooks/useClickOutside";
 import { Todo } from "@/shared/types/todo";
 
@@ -59,35 +58,33 @@ export const TodoModal: React.FC<TodoModalProps> = ({
   }
 
   return (
-    <ThemeWrapper>
-      <ModalContainer>
-        <TodoModalContent ref={ref}>
-          <ModalTitle>Tasks for {date?.toLocaleDateString()}</ModalTitle>
+    <ModalContainer>
+      <TodoModalContent ref={ref}>
+        <ModalTitle>Tasks for {date?.toLocaleDateString()}</ModalTitle>
 
-          <TodoInputContainer>
-            <TodoInput
-              type="text"
-              maxLength={maxLength}
-              placeholder="Add a new task"
-              value={inputValue}
-              onChange={handleInputChange}
-            />
-            <AddButton onClick={() => handleTodoAdd(inputValue, date)} disabled={!inputValue}>
-              Add task
-            </AddButton>
-          </TodoInputContainer>
+        <TodoInputContainer>
+          <TodoInput
+            type="text"
+            maxLength={maxLength}
+            placeholder="Add a new task"
+            value={inputValue}
+            onChange={handleInputChange}
+          />
+          <AddButton onClick={() => handleTodoAdd(inputValue, date)} disabled={!inputValue}>
+            Add task
+          </AddButton>
+        </TodoInputContainer>
 
-          {todos.length === 0 ? (
-            <EmptyTodosList>Your task list is empty</EmptyTodosList>
-          ) : (
-            <TodoList todos={todos} onTodoRemove={onTodoRemove} />
-          )}
+        {todos.length === 0 ? (
+          <EmptyTodosList>Your task list is empty</EmptyTodosList>
+        ) : (
+          <TodoList todos={todos} onTodoRemove={onTodoRemove} />
+        )}
 
-          <CloseButtonContainer>
-            <CloseButton onClick={onClose}>Close</CloseButton>
-          </CloseButtonContainer>
-        </TodoModalContent>
-      </ModalContainer>
-    </ThemeWrapper>
+        <CloseButtonContainer>
+          <CloseButton onClick={onClose}>Close</CloseButton>
+        </CloseButtonContainer>
+      </TodoModalContent>
+    </ModalContainer>
   );
 };

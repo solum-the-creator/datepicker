@@ -1,7 +1,9 @@
 import { useMemo } from "react";
 import { Calendar } from "@components/calendar";
 import { Holiday } from "@customTypes/holidays";
+import { Theme } from "@styles/theme";
 
+import { ThemeWrapper } from "@/shared/components/theme-wrapper";
 import { withTodoLogic } from "@/shared/hoc/withTodoLogic";
 
 type TodoCalendarProps = {
@@ -13,10 +15,15 @@ type TodoCalendarProps = {
   highlightWeekends?: boolean;
   highlightHolidays?: boolean;
   holidays?: Holiday[];
+  theme?: Partial<Theme>;
 };
 
-export const TodoCalendar: React.FC<TodoCalendarProps> = ({ ...props }) => {
+export const TodoCalendar: React.FC<TodoCalendarProps> = ({ theme, ...props }) => {
   const CalendarWithTodoLogic = useMemo(() => withTodoLogic(Calendar), []);
 
-  return <CalendarWithTodoLogic {...props} />;
+  return (
+    <ThemeWrapper theme={theme}>
+      <CalendarWithTodoLogic {...props} />
+    </ThemeWrapper>
+  );
 };

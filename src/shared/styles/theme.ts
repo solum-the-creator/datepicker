@@ -1,4 +1,27 @@
-export const theme = {
+export type Theme = {
+  colors: {
+    primary?: string;
+    secondary?: string;
+    background?: string;
+    disabledText?: string;
+    activeText?: string;
+    active?: string;
+    activeBright?: string;
+    range?: string;
+    border?: string;
+    hoverBackground?: string;
+    hoverButton?: string;
+    muted?: string;
+    red?: string;
+  };
+  bordersRadius: {
+    rangeStart?: string;
+    rangeEnd?: string;
+    range?: string;
+  };
+};
+
+export const theme: Theme = {
   colors: {
     primary: "#000000",
     secondary: "#333333",
@@ -20,5 +43,3 @@ export const theme = {
     range: "0",
   },
 };
-
-export type Theme = typeof theme;
