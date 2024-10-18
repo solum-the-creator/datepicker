@@ -18,7 +18,12 @@ export const MonthYearText = styled.div`
 export const ArrowButton = styled.button`
   background-color: transparent;
   border: none;
+  color: ${({ theme }) => theme.colors.primary};
   cursor: pointer;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.active};
+  }
 
   &:disabled {
     color: ${({ theme }) => theme.colors.border};

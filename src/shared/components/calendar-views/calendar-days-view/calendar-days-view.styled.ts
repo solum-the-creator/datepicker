@@ -6,6 +6,8 @@ export const WeekDaysHeader = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   grid-template-rows: 32px;
+
+  color: ${({ theme }) => theme.colors.secondary};
 `;
 
 export const WeekDayCell = styled.p`

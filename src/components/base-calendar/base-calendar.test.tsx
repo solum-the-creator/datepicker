@@ -2,10 +2,10 @@ import { theme } from "@styles/theme";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { parseDate } from "@utils/formatDatesHelpers";
 
-import { Calendar } from ".";
+import { BaseCalendar } from ".";
 
 describe("Calendar Component", () => {
-  const renderCalendar = (props = {}) => render(<Calendar {...props} value={new Date(2024, 0, 5)} />);
+  const renderCalendar = (props = {}) => render(<BaseCalendar {...props} value={new Date(2024, 0, 5)} />);
 
   it("should render the calendar with the days view by default", () => {
     renderCalendar();

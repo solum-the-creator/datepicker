@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Calendar } from "@components/calendar";
 import { Theme } from "@styles/theme";
 
@@ -6,6 +5,8 @@ import { ThemeWrapper } from "@/shared/components/theme-wrapper";
 import { Holiday } from "@/shared/types/holidays";
 
 type BaseCalendarProps = {
+  value?: Date;
+  onDateSelect?: (date?: Date) => void;
   minDate?: Date;
   maxDate?: Date;
   startWeekOnSunday?: boolean;
@@ -16,11 +17,9 @@ type BaseCalendarProps = {
 };
 
 export const BaseCalendar: React.FC<BaseCalendarProps> = ({ theme, ...props }) => {
-  const [value, setValue] = useState<Date>();
-
   return (
     <ThemeWrapper theme={theme}>
-      <Calendar value={value} onDateSelect={setValue} {...props} />
+      <Calendar {...props} />
     </ThemeWrapper>
   );
 };
