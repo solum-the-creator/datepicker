@@ -21,7 +21,7 @@ describe("TodoCalendar Component", () => {
     const addButton = screen.getByText("Add tasks");
     fireEvent.click(addButton);
 
-    expect(screen.getByText("Tasks for 10.10.2024")).toBeInTheDocument();
+    expect(screen.getByText(`Tasks for ${date.toLocaleDateString()}`)).toBeInTheDocument();
   });
 
   it("should add a new task to the list", async () => {
@@ -73,11 +73,12 @@ describe("TodoCalendar Component", () => {
     const closeButton = screen.getByText("Close");
     fireEvent.click(closeButton);
 
-    expect(screen.queryByText("Tasks for 10.10.2024")).not.toBeInTheDocument();
+    expect(screen.queryByText(`Tasks for ${date.toLocaleDateString()}`)).not.toBeInTheDocument();
   });
 
   it("should show existing tasks in the modal when 'View tasks' button is clicked", async () => {
-    renderTodoCalendar({ value: new Date(2024, 9, 11) });
+    const date = new Date(2024, 9, 11);
+    renderTodoCalendar({ value: date });
 
     const addButton = screen.getByText("Add tasks");
     fireEvent.click(addButton);
@@ -94,7 +95,7 @@ describe("TodoCalendar Component", () => {
     const viewButton = screen.getByText("View tasks");
     fireEvent.click(viewButton);
 
-    expect(screen.getByText("Tasks for 11.10.2024")).toBeInTheDocument();
+    expect(screen.getByText(`Tasks for ${date.toLocaleDateString()}`)).toBeInTheDocument();
     expect(screen.getByText("Existing task")).toBeInTheDocument();
   });
 });
