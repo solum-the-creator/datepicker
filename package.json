@@ -88,6 +88,5 @@
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "yarn eslint",
     "*.{js,jsx,ts,tsx,html,css}": "yarn prettier --write"
-  },
-  "dependencies": {}
+  }
 }
