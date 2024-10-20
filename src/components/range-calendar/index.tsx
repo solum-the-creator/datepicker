@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useMemo } from "react";
 import { Calendar } from "@components/calendar";
 import { Holiday } from "@customTypes/holidays";
+import { Theme } from "@styles/theme";
 
+import { ThemeWrapper } from "@/shared/components/theme-wrapper";
 import { withRangeLogic } from "@/shared/hoc/with-range-logic/withRangeLogic";
 
-const CalendarWithRangeLogic = withRangeLogic(Calendar);
-
-type RangeCalendarProps = {
+export type RangeCalendarProps = {
+  rangeStart?: Date;
+  rangeEnd?: Date;
+  onRangeSelect?: (start?: Date, end?: Date) => void;
   minDate?: Date;
   maxDate?: Date;
   labelStart?: string;
@@ -15,18 +18,17 @@ type RangeCalendarProps = {
   highlightWeekends?: boolean;
   highlightHolidays?: boolean;
   holidays?: Holiday[];
+  theme?: Partial<Theme>;
 };
 
-export const RangeCalendar: React.FC<RangeCalendarProps> = ({ ...props }) => {
-  const [rangeStart, setRangeStart] = useState<Date>();
-  const [rangeEnd, setRangeEnd] = useState<Date>();
+const RangeCalendar: React.FC<RangeCalendarProps> = ({ theme, ...props }) => {
+  const CalendarWithRangeLogic = useMemo(() => withRangeLogic(Calendar), []);
 
   return (
-    <CalendarWithRangeLogic
-      rangeStart={rangeStart}
-      rangeEnd={rangeEnd}
-      onRangeSelect={(start, end) => [setRangeStart(start), setRangeEnd(end)]}
-      {...props}
-    />
+    <ThemeWrapper theme={theme}>
+      <CalendarWithRangeLogic {...props} />
+    </ThemeWrapper>
   );
 };
+
+export default RangeCalendar;

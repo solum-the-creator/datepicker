@@ -6,6 +6,8 @@ export const WeekDaysHeader = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   grid-template-rows: 32px;
+
+  color: ${({ theme }) => theme.colors.secondary};
 `;
 
 export const WeekDayCell = styled.p`
@@ -114,7 +116,7 @@ export const DayCell = styled.button<{
     background-color: ${({ theme }) => theme.colors.active};
     bottom: 0.2rem;
     left: calc(50% - 0.125rem);
-    z-index: -1;
+    z-index: 0;
     opacity: ${({ $hasTask }) => ($hasTask ? "0.5" : "0")};
   }
 

@@ -1,5 +1,6 @@
 import { View } from "@customTypes/calendar";
 
+import { getDaysInMonth } from "./dateHelpers";
 import { toDate } from "./formatDatesHelpers";
 
 export const canGoPrev = (view: View, year: number, month: number, minDate?: Date): boolean => {
@@ -73,4 +74,14 @@ export const isMonthDisabled = (month: number, year: number, minDate?: Date, max
     return true;
   }
   return false;
+};
+
+export const isValidInputLength = (input: string): boolean => input.length >= 10;
+
+export const isValidDateParts = (day?: number, month?: number, year?: number): boolean => {
+  if (!day || !month || !year) return false;
+
+  if (month < 1 || month > 12) return false;
+
+  return day >= 1 && day <= getDaysInMonth(month, year);
 };

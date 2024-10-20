@@ -73,10 +73,8 @@ export const getMonthName = (month: number) => {
 };
 
 export const getWeekDaysNames = (startWeekOnSunday = true) => {
-  if (startWeekOnSunday) {
-    return ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
-  }
-  return ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
+  const week = ["Mo", "Tu", "We", "Th", "Fr", "Sa"];
+  return startWeekOnSunday ? ["Su", ...week] : [...week, "Su"];
 };
 
 export const isWeekend = (dayIndex: number, startWeekOnSunday: boolean): boolean => {
@@ -160,12 +158,4 @@ export const calculateNewYear = (
     return currentYear + 1;
   }
   return currentYear;
-};
-
-export const isValidDateParts = (day?: number, month?: number, year?: number): boolean => {
-  if (!day || !month || !year) return false;
-
-  if (month < 1 || month > 12) return false;
-
-  return day >= 1 && day <= getDaysInMonth(month, year);
 };

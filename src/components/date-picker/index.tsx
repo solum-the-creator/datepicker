@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useMemo } from "react";
 import { Calendar } from "@components/calendar";
 import { Holiday } from "@customTypes/holidays";
+import { Theme } from "@styles/theme";
 
+import { ThemeWrapper } from "@/shared/components/theme-wrapper";
 import { withPickerLogic } from "@/shared/hoc/with-picker-logic/withPickerLogic";
 
-export const CalendarWithPickerLogic = withPickerLogic(Calendar);
-
-type BaseCalendarProps = {
+export type DatePickerProps = {
+  value?: Date;
+  onDateSelect?: (date?: Date) => void;
   minDate?: Date;
   maxDate?: Date;
   label?: string;
@@ -14,10 +16,17 @@ type BaseCalendarProps = {
   highlightWeekends?: boolean;
   highlightHolidays?: boolean;
   holidays?: Holiday[];
+  theme?: Partial<Theme>;
 };
 
-export const BaseCalendarWithPicker: React.FC<BaseCalendarProps> = ({ ...props }) => {
-  const [value, setValue] = useState<Date | undefined>(undefined);
+const DatePicker: React.FC<DatePickerProps> = ({ theme, ...props }) => {
+  const CalendarWithPickerLogic = useMemo(() => withPickerLogic(Calendar), []);
 
-  return <CalendarWithPickerLogic value={value} onDateSelect={setValue} {...props} />;
+  return (
+    <ThemeWrapper theme={theme}>
+      <CalendarWithPickerLogic {...props} />
+    </ThemeWrapper>
+  );
 };
+
+export default DatePicker;

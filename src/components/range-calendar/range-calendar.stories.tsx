@@ -1,23 +1,32 @@
-import { Meta, StoryObj } from "@storybook/react";
+import { useState } from "react";
+import { Meta, StoryFn } from "@storybook/react";
 
-import { RangeCalendar } from ".";
+import RangeCalendar from ".";
 
 export default {
   title: "Components/RangeCalendar",
   component: RangeCalendar,
-} as Meta;
+} as Meta<typeof RangeCalendar>;
 
-type Story = StoryObj<typeof RangeCalendar>;
+const Template: StoryFn<typeof RangeCalendar> = (args) => {
+  const [rangeStart, setRangeStart] = useState<Date>();
+  const [rangeEnd, setRangeEnd] = useState<Date>();
 
-export const Default: Story = {
-  args: {
-    startWeekOnSunday: false,
-    highlightWeekends: true,
-    highlightHolidays: false,
-    labelStart: "Start date",
-    labelEnd: "End date",
-    holidays: undefined,
-    minDate: undefined,
-    maxDate: undefined,
-  },
+  const onRangeSelect = (start?: Date, end?: Date) => {
+    setRangeStart(start);
+    setRangeEnd(end);
+  };
+
+  return (
+    <RangeCalendar {...args} rangeStart={rangeStart} rangeEnd={rangeEnd} onRangeSelect={onRangeSelect} />
+  );
+};
+
+export const Default = Template.bind({});
+Default.args = {
+  startWeekOnSunday: false,
+  highlightWeekends: true,
+  highlightHolidays: false,
+  labelStart: "Start date",
+  labelEnd: "End date",
 };

@@ -1,5 +1,3 @@
-import { ThemeWrapper } from "@/shared/components/theme-wrapper";
-
 import { CalendarButtonStyled } from "./calendar-button.styled";
 
 type CalendarButtonProps = {
@@ -9,10 +7,8 @@ type CalendarButtonProps = {
 
 export const CalendarButton: React.FC<CalendarButtonProps> = ({ children, onClick }) => {
   return (
-    <ThemeWrapper>
-      <CalendarButtonStyled type="button" onClick={onClick}>
-        {children}
-      </CalendarButtonStyled>
-    </ThemeWrapper>
+    <CalendarButtonStyled data-testid="calendar-button" onClick={onClick}>
+      {children}
+    </CalendarButtonStyled>
   );
 };

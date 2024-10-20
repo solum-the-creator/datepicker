@@ -1,15 +1,10 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { Todo } from "@customTypes/todo";
 
 import { defaultHolidays } from "@/shared/constants/holidays";
+import { useDayProps } from "@/shared/hooks/useDayProps";
 import { Holiday } from "@/shared/types/holidays";
-import {
-  enhanceCalendarDays,
-  getCalendarDays,
-  getWeekDaysNames,
-  isDateWithinRange,
-  isSameDate,
-} from "@/shared/utils/dateHelpers";
+import { enhanceCalendarDays, getCalendarDays, getWeekDaysNames } from "@/shared/utils/dateHelpers";
 
 import {
   CalendarBodyContainer,
@@ -64,17 +59,26 @@ export const CalendarDaysView: React.FC<CalendarDaysViewProps> = ({
     [days, startWeekOnSunday, minDate, maxDate, holidays]
   );
 
-  const handleDateClick = (day: number, month: number, year: number) => {
-    const newSelectedDate = new Date(year, month, day);
+  const getDayProps = useDayProps({
+    selectedDate,
+    rangeStart,
+    rangeEnd,
+    withTodos,
+    todos,
+    highlightWeekends,
+    highlightHolidays,
+  });
 
-    if (onDateSelect) {
-      onDateSelect(newSelectedDate);
-    }
-  };
+  const handleDateClick = useCallback(
+    (day: number, month: number, year: number) => {
+      const newSelectedDate = new Date(year, month, day);
 
-  const hasTodos = (date: Date) => {
-    return todos.some((todo) => isSameDate(todo.date, date));
-  };
+      if (onDateSelect) {
+        onDateSelect(newSelectedDate);
+      }
+    },
+    [onDateSelect]
+  );
 
   return (
     <CalendarBodyContainer>
@@ -85,47 +89,19 @@ export const CalendarDaysView: React.FC<CalendarDaysViewProps> = ({
       </WeekDaysHeader>
 
       <DatesGrid>
-        {enhancedDays.map(
-          ({
-            day,
-            month: currentMonth,
-            year: currentYear,
-            isCurrentMonth,
-            isToday,
-            isDisabled,
-            isHoliday,
-            isWeekend,
-          }) => {
-            const currentDate = new Date(currentYear, currentMonth, day);
-            const isSelected = selectedDate && isSameDate(selectedDate, currentDate);
-
-            const isRangeStart = rangeStart && isSameDate(rangeStart, currentDate);
-            const isRangeEnd = rangeEnd && isSameDate(rangeEnd, currentDate);
-            const isInRange = rangeStart && rangeEnd && isDateWithinRange(currentDate, rangeStart, rangeEnd);
-            const hasTask = withTodos && hasTodos(currentDate);
-
-            return (
-              <DayCell
-                key={`${currentYear}-${currentMonth}-${day}`}
-                type="button"
-                role="gridcell"
-                disabled={isDisabled}
-                onClick={() => handleDateClick(day, currentMonth, currentYear)}
-                $isCurrentMonth={isCurrentMonth}
-                $isToday={isToday}
-                $isWeekend={highlightWeekends && isWeekend}
-                $isHoliday={highlightHolidays && isHoliday}
-                $isSelected={isSelected}
-                $isInRange={isInRange}
-                $isRangeStart={isRangeStart}
-                $isRangeEnd={isRangeEnd}
-                $isDisabled={isDisabled}
-                $hasTask={hasTask}>
-                {day}
-              </DayCell>
-            );
-          }
-        )}
+        {enhancedDays.map((dayInfo) => {
+          return (
+            <DayCell
+              key={`${dayInfo.year}-${dayInfo.month}-${dayInfo.day}`}
+              data-day={dayInfo.day}
+              data-month={dayInfo.month}
+              data-year={dayInfo.year}
+              onClick={() => handleDateClick(dayInfo.day, dayInfo.month, dayInfo.year)}
+              {...getDayProps(dayInfo)}>
+              {dayInfo.day}
+            </DayCell>
+          );
+        })}
       </DatesGrid>
     </CalendarBodyContainer>
   );

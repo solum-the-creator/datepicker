@@ -11,8 +11,8 @@ type TodoListProps = {
 export const TodoList: React.FC<TodoListProps> = ({ todos, onTodoRemove }) => {
   return (
     <TodoListStyled>
-      {todos.map((todo) => (
-        <TodoItem key={todo.id} id={todo.id} text={todo.text} onTodoRemove={onTodoRemove} />
+      {todos.map(({ id, text }) => (
+        <TodoItem key={id} id={id} text={text} onTodoRemove={onTodoRemove} />
       ))}
     </TodoListStyled>
   );
