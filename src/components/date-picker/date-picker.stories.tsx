@@ -1,19 +1,27 @@
+import { useState } from "react";
 import { Meta, StoryFn } from "@storybook/react/*";
 
-import { BaseCalendarWithPicker } from ".";
+import DatePicker from ".";
 
 export default {
   title: "Components/DatePicker",
-  component: BaseCalendarWithPicker,
-} as Meta;
+  component: DatePicker,
+} as Meta<typeof DatePicker>;
 
-const Template: StoryFn<typeof BaseCalendarWithPicker> = (args) => <BaseCalendarWithPicker {...args} />;
+const Template: StoryFn<typeof DatePicker> = (args) => {
+  const [value, setValue] = useState<Date>();
 
-export const DatePickerDefault = Template.bind({});
-DatePickerDefault.args = {
-  minDate: new Date(2024, 0, 1),
-  maxDate: new Date(2024, 11, 31),
-  highlightHolidays: true,
+  const onChange = (value?: Date) => {
+    setValue(value);
+  };
+
+  return <DatePicker {...args} value={value} onDateSelect={onChange} />;
+};
+
+export const Default = Template.bind({});
+Default.args = {
+  startWeekOnSunday: false,
   highlightWeekends: true,
-  startWeekOnSunday: true,
+  highlightHolidays: false,
+  label: "Date",
 };

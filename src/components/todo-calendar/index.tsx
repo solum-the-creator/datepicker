@@ -1,13 +1,31 @@
-import { useState } from "react";
+import { useMemo } from "react";
 import { Calendar } from "@components/calendar";
-import { withCalendarLogic } from "@components/hoc/withCalendarLogic";
-import { withTodoLogic } from "@components/hoc/withTodoLogic";
+import { Holiday } from "@customTypes/holidays";
+import { Theme } from "@styles/theme";
 
-const CalendarWithLogic = withCalendarLogic(Calendar);
-const CalendarWithTodoLogic = withTodoLogic(CalendarWithLogic);
+import { ThemeWrapper } from "@/shared/components/theme-wrapper";
+import { withTodoLogic } from "@/shared/hoc/withTodoLogic";
 
-export const TodoCalendar: React.FC = () => {
-  const [date, setDate] = useState<Date | undefined>(new Date());
-
-  return <CalendarWithTodoLogic value={date} onSelect={setDate} />;
+export type TodoCalendarProps = {
+  value?: Date;
+  onDateSelect?: (date?: Date) => void;
+  minDate?: Date;
+  maxDate?: Date;
+  startWeekOnSunday?: boolean;
+  highlightWeekends?: boolean;
+  highlightHolidays?: boolean;
+  holidays?: Holiday[];
+  theme?: Partial<Theme>;
 };
+
+const TodoCalendar: React.FC<TodoCalendarProps> = ({ theme, ...props }) => {
+  const CalendarWithTodoLogic = useMemo(() => withTodoLogic(Calendar), []);
+
+  return (
+    <ThemeWrapper theme={theme}>
+      <CalendarWithTodoLogic {...props} />
+    </ThemeWrapper>
+  );
+};
+
+export default TodoCalendar;

@@ -1,33 +1,32 @@
-import { useState } from "react";
+import { useMemo } from "react";
 import { Calendar } from "@components/calendar";
-import { withPickerLogic } from "@components/hoc/with-picker-logic/withPickerLogic";
-import { withCalendarLogic } from "@components/hoc/withCalendarLogic";
+import { Holiday } from "@customTypes/holidays";
+import { Theme } from "@styles/theme";
 
-const CalendarWithLogic = withCalendarLogic(Calendar);
-export const CalendarWithPickerLogic = withPickerLogic(CalendarWithLogic);
+import { ThemeWrapper } from "@/shared/components/theme-wrapper";
+import { withPickerLogic } from "@/shared/hoc/with-picker-logic/withPickerLogic";
 
-type BaseCalendarProps = {
+export type DatePickerProps = {
   value?: Date;
-  onSelect?: (value: Date) => void;
+  onDateSelect?: (date?: Date) => void;
   minDate?: Date;
   maxDate?: Date;
+  label?: string;
   startWeekOnSunday?: boolean;
   highlightWeekends?: boolean;
   highlightHolidays?: boolean;
+  holidays?: Holiday[];
+  theme?: Partial<Theme>;
 };
 
-export const BaseCalendarWithPicker: React.FC<BaseCalendarProps> = () => {
-  const [value, setValue] = useState<Date | undefined>(undefined);
+const DatePicker: React.FC<DatePickerProps> = ({ theme, ...props }) => {
+  const CalendarWithPickerLogic = useMemo(() => withPickerLogic(Calendar), []);
 
   return (
-    <CalendarWithPickerLogic
-      value={value}
-      onSelect={setValue}
-      startWeekOnSunday={false}
-      highlightHolidays={true}
-      highlightWeekends={true}
-      minDate={new Date(2024, 8, 1)}
-      maxDate={new Date(2024, 10, 20)}
-    />
+    <ThemeWrapper theme={theme}>
+      <CalendarWithPickerLogic {...props} />
+    </ThemeWrapper>
   );
 };
+
+export default DatePicker;

@@ -1,30 +1,27 @@
-import { useState } from "react";
 import { Calendar } from "@components/calendar";
-import { withCalendarLogic } from "@components/hoc/withCalendarLogic";
-import { Holiday } from "@customTypes/holidays";
+import { Theme } from "@styles/theme";
 
-type BaseCalendarProps = {
+import { ThemeWrapper } from "@/shared/components/theme-wrapper";
+import { Holiday } from "@/shared/types/holidays";
+
+export type BaseCalendarProps = {
+  value?: Date;
+  onDateSelect?: (date?: Date) => void;
   minDate?: Date;
   maxDate?: Date;
   startWeekOnSunday?: boolean;
   highlightWeekends?: boolean;
   highlightHolidays?: boolean;
   holidays?: Holiday[];
+  theme?: Partial<Theme>;
 };
 
-const CalendarWithLogic = withCalendarLogic(Calendar);
-
-export const BaseCalendar: React.FC<BaseCalendarProps> = () => {
-  const [value, setValue] = useState<Date | undefined>(new Date());
+const BaseCalendar: React.FC<BaseCalendarProps> = ({ theme, ...props }) => {
   return (
-    <CalendarWithLogic
-      value={value}
-      onSelect={setValue}
-      startWeekOnSunday={false}
-      highlightHolidays={true}
-      highlightWeekends={true}
-      minDate={new Date(2024, 9, 1)}
-      maxDate={new Date(2024, 9, 20)}
-    />
+    <ThemeWrapper theme={theme}>
+      <Calendar {...props} />
+    </ThemeWrapper>
   );
 };
+
+export default BaseCalendar;
