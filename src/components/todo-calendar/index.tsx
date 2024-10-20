@@ -6,7 +6,7 @@ import { Theme } from "@styles/theme";
 import { ThemeWrapper } from "@/shared/components/theme-wrapper";
 import { withTodoLogic } from "@/shared/hoc/withTodoLogic";
 
-type TodoCalendarProps = {
+export type TodoCalendarProps = {
   value?: Date;
   onDateSelect?: (date?: Date) => void;
   minDate?: Date;
@@ -18,7 +18,7 @@ type TodoCalendarProps = {
   theme?: Partial<Theme>;
 };
 
-export const TodoCalendar: React.FC<TodoCalendarProps> = ({ theme, ...props }) => {
+const TodoCalendar: React.FC<TodoCalendarProps> = ({ theme, ...props }) => {
   const CalendarWithTodoLogic = useMemo(() => withTodoLogic(Calendar), []);
 
   return (
@@ -27,3 +27,5 @@ export const TodoCalendar: React.FC<TodoCalendarProps> = ({ theme, ...props }) =
     </ThemeWrapper>
   );
 };
+
+export default TodoCalendar;

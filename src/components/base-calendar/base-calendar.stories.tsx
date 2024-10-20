@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { BaseCalendar } from ".";
+import BaseCalendar from ".";
 
 export default {
   title: "Components/Calendar",

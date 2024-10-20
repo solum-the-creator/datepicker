@@ -33,6 +33,7 @@ export const Input = styled.input<{ $isError?: boolean }>`
 
   font-size: 15px;
   color: ${({ theme }) => theme.colors.secondary};
+  background-color: ${({ theme }) => theme.colors.background};
 
   &:focus {
     outline: none;

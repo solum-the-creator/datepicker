@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { TodoCalendar } from ".";
+import TodoCalendar from ".";
 
 export default {
   title: "Components/TodoCalendar",

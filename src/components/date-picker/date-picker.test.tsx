@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { parseDate } from "@utils/formatDatesHelpers";
 
-import { DatePicker } from ".";
+import DatePicker from ".";
 
 describe("DatePicker Component", () => {
   const date = new Date(2024, 9, 10);

@@ -21,7 +21,7 @@ export type RangeCalendarProps = {
   theme?: Partial<Theme>;
 };
 
-export const RangeCalendar: React.FC<RangeCalendarProps> = ({ theme, ...props }) => {
+const RangeCalendar: React.FC<RangeCalendarProps> = ({ theme, ...props }) => {
   const CalendarWithRangeLogic = useMemo(() => withRangeLogic(Calendar), []);
 
   return (
@@ -30,3 +30,5 @@ export const RangeCalendar: React.FC<RangeCalendarProps> = ({ theme, ...props })
     </ThemeWrapper>
   );
 };
+
+export default RangeCalendar;

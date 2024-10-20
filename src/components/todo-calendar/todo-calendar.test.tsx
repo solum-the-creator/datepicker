@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import { TodoCalendar } from ".";
+import TodoCalendar from ".";
 
 describe("TodoCalendar Component", () => {
   const date = new Date(2024, 9, 10);

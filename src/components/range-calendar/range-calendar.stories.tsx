@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { RangeCalendar } from ".";
+import RangeCalendar from ".";
 
 export default {
   title: "Components/RangeCalendar",

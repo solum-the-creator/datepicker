@@ -6,7 +6,7 @@ import { Theme } from "@styles/theme";
 import { ThemeWrapper } from "@/shared/components/theme-wrapper";
 import { withPickerLogic } from "@/shared/hoc/with-picker-logic/withPickerLogic";
 
-type BaseCalendarProps = {
+export type DatePickerProps = {
   value?: Date;
   onDateSelect?: (date?: Date) => void;
   minDate?: Date;
@@ -19,7 +19,7 @@ type BaseCalendarProps = {
   theme?: Partial<Theme>;
 };
 
-export const DatePicker: React.FC<BaseCalendarProps> = ({ theme, ...props }) => {
+const DatePicker: React.FC<DatePickerProps> = ({ theme, ...props }) => {
   const CalendarWithPickerLogic = useMemo(() => withPickerLogic(Calendar), []);
 
   return (
@@ -28,3 +28,5 @@ export const DatePicker: React.FC<BaseCalendarProps> = ({ theme, ...props }) => 
     </ThemeWrapper>
   );
 };
+
+export default DatePicker;

@@ -2,7 +2,7 @@ import { theme } from "@styles/theme";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { parseDate } from "@utils/formatDatesHelpers";
 
-import { BaseCalendar } from ".";
+import BaseCalendar from ".";
 
 describe("Calendar Component", () => {
   const renderCalendar = (props = {}) => render(<BaseCalendar {...props} value={new Date(2024, 0, 5)} />);

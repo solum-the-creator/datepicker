@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { parseDate } from "@utils/formatDatesHelpers";
 
-import { RangeCalendar } from ".";
+import RangeCalendar from ".";
 
 describe("RangeCalendar Component", () => {
   const rangeStart = new Date(2024, 9, 10);
