@@ -4,7 +4,7 @@ import { shortMonths } from "@/shared/constants/months";
 
 import { CalendarCell } from "../calendar-views.styled";
 
-import { CalendarBodyContainer } from "./calendar-months-view";
+import { CalendarBodyContainer } from "./calendar-months-view.styled";
 
 type CalendarMonthsViewProps = {
   currentMonth: number;

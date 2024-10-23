@@ -6,7 +6,7 @@ import { isValidDateParts, isValidInputLength } from "@utils/validation";
 import { DateInput } from "@/shared/components/date-input";
 import { useClickOutside } from "@/shared/hooks/useClickOutside";
 
-import { CalendarContainer, PickerContainer } from "./date-picker-with-calendar";
+import { CalendarContainer, PickerContainer } from "./date-picker-with-calendar.styled";
 
 type DatePickerWithCalendarProps = {
   value?: Date;
